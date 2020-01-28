@@ -1,0 +1,7 @@
+c This file contains a tree decomposition with 3 bags, width 5, for a graph with 12 vertices
+s 3 5 12
+b 1 0 1 4 9 10 11
+b 2 1 2 6 8 9 11 
+b 3 2 3 5 6 7 8
+0 1
+1 2
