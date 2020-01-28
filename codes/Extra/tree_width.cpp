@@ -1,10 +1,17 @@
 // #include <graph_input.h>
 #include <bits/stdc++.h>
 using namespace std;
+void print_vector(vector<int>& x);
+bool check_std(graph g, graph t, bags b);
+
 class graph
 {
   public:
-	graph(int a, int b);
+	graph(int a, int b)
+	{
+		v = a;
+		no_of_edges = b;
+	}
 	int v;
 	int no_of_edges;
 	int matrix[100][100];
@@ -38,26 +45,15 @@ class graph
 	}
 };
 
-graph::graph(int a, int b)
-{
-	v = a;
-	no_of_edges = b;
-}
-
-void print_vector(vector<int>& x)
-{
-	for (int i = 0; i < x.size(); ++i)
-	{
-		cout << x[i] << " ";
-	}
-	cout << endl;
-}
 
 
 class bags
 {
 public:
-	bags(int a);
+	bags(int a)
+	{
+		width = a;
+	}
 	int width;
 	vector< vector<int> > bag_list;
 
@@ -79,178 +75,8 @@ public:
 	}
 };
 
-bags::bags(int b)
-{
-	width = b;
-}
 
 
-bool check_td(graph g, graph t, bags b)
-{
-	bool flag, flag1, flag2;
-	for (int i = 0; i < g.v; ++i)                    // For each vertex i
-	{
-		flag = false;
-		for (int j = 0; j < t.v; ++j)                // Searching for a bag containing i
-		{
-			for (auto k : b.bag_list[j])
-			{
-				if (i == k)
-				{
-					flag = true;
-					break;
-				}
-			}
-			if (flag)
-			{
-				break;
-			}
-		}
-		if (!flag)                                   // If i is not found in any bag then return false
-		{
-			return false;
-		}
-	}
-
-	for (int i = 0; i < g.v; ++i)
-	{
-		for (int j = 0; j < g.v; ++j)
-		{
-			if (g.matrix[i][j] == 1)             	// For each edge i,j
-			{
-				flag = false;
-				for (int k = 0; k < t.v; ++k)       // Searching for a bag containing both i,j
-				{
-					flag1 = false;
-					flag2 = false;
-					for (auto l : b.bag_list[k])
-					{
-						if (i == l)
-						{
-							flag1 = true;
-						}
-						if (j == l)
-						{
-							flag2 = true;
-						}
-					}
-					if (flag1 && flag2)
-					{
-						flag = true;
-					}
-				}
-				if (!flag)							// If i is not found in any bag then return false
-				{
-					return false;
-				}
-			}
-		}
-	}
-
-	for (int i = 0; i < g.v; ++i)                 	//For each vertex i
-	{
-		bool mark[t.v];
-		for (int j = 0; j < t.v; ++j)
-		{
-			mark[j] = false;
-		}
-		for (int j = 0; j < t.v; ++j)			  	//Marking all the bags containing i 
-		{
-			for (auto k : b.bag_list[j])
-			{
-				if (k==i)
-				{
-					mark[j] = true;
-					break;
-				}
-			}
-		}
-
-		for (int j = 0; j < t.v; ++j)			 	// Starting bfs with bag j containing i 
-		{
-			for (auto k : b.bag_list[j])
-			{
-				if (i == k)
-				{
-					bool visited[t.v];
-					for (int l = 0; l < t.v; ++l)
-					{
-						visited[l] = false;
-					}
-					list<int> queue;
-
-					visited[j] = true;				// bag j is visited
-					queue.push_back(j);
-
-					while(!queue.empty())
-					{
-						int s = queue.front();
-						queue.pop_front();
-						for (int m = 0; m < t.v; ++m)  // Exploring the child m
-						{
-							if (t.matrix[s][m] == 1 && !visited[m])
-							{
-								for (auto n : b.bag_list[m])
-								{
-									if (n == i)      // If child m contains i then push it to queue
-									{
-										visited[m] = true;
-										queue.push_back(m);
-										break;
-									}
-								}
-							}
-						}
-					}
-
-					for (int l = 0; l < t.v; ++l)
-					{
-						if (mark[l] != visited[l])
-						{
-							return false;
-						}
-					}
-					break;
-				}
-			}
-		}
-	}
-
-	// for (int i = 0; i < t.v; ++i)
-	// {
-	// 	sort(b.bag_list[i].begin(), b.bag_list[i].end());
-	// }
-
-	for (int i = 0; i < t.v; ++i)     			// For each bag 
-	{
-		for (int j = 0; j < t.v; ++j)
-		{
-			if (i != j)
-			{
-				flag = false;
-				map <int,int> m;
-			    for(auto k : b.bag_list[j])
-			    {
-			        m[k]++;
-			    }
-			    for(auto k : b.bag_list[i])
-			    {
-			        if(m.find(k)==m.end()) 
-			        {
-			        	flag = true;
-			        	break;
-			        }
-			    }
-			    if (!flag)
-			    {
-			    	return false;
-			    }
-			}
-		}
-	}
-
-	return true;
-}
 
 void combination(vector<int> v, int data[], int start, int end, int index, int n, vector< vector <int>> &result)
 {
@@ -426,7 +252,7 @@ int opt_tree_decomposition(graph g)
 			for (auto k : bag_combs)  //all possible bags of a tree
 			{
 				b.bag_list = k;
-				if(check_td(g,t,b))
+				if(check_std(g,t,b))
 				{
 					int temp = compute_width(b.bag_list);
 					tree_width = min(tree_width, temp);
@@ -493,4 +319,178 @@ int main(int argc, char const *argv[])
 	cout << "Tree width :" << result << endl;
 
 	return 0;
+}
+
+
+void print_vector(vector<int>& x)
+{
+	for (int i = 0; i < x.size(); ++i)
+	{
+		cout << x[i] << " ";
+	}
+	cout << endl;
+}
+
+
+bool check_std(graph g, graph t, bags b)
+{
+	bool flag, flag1, flag2;
+	for (int i = 0; i < g.v; ++i)                    // For each vertex i
+	{
+		flag = false;
+		for (int j = 0; j < t.v; ++j)                // Searching for a bag containing i
+		{
+			for (auto k : b.bag_list[j])
+			{
+				if (i == k)
+				{
+					flag = true;
+					break;
+				}
+			}
+			if (flag)
+			{
+				break;
+			}
+		}
+		if (!flag)                                   // If i is not found in any bag then return false
+		{
+			return false;
+		}
+	}
+
+	for (int i = 0; i < g.v; ++i)
+	{
+		for (int j = 0; j < g.v; ++j)
+		{
+			if (g.matrix[i][j] == 1)             	// For each edge i,j
+			{
+				flag = false;
+				for (int k = 0; k < t.v; ++k)       // Searching for a bag containing both i,j
+				{
+					flag1 = false;
+					flag2 = false;
+					for (auto l : b.bag_list[k])
+					{
+						if (i == l)
+						{
+							flag1 = true;
+						}
+						if (j == l)
+						{
+							flag2 = true;
+						}
+					}
+					if (flag1 && flag2)
+					{
+						flag = true;
+					}
+				}
+				if (!flag)							// If i is not found in any bag then return false
+				{
+					return false;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < g.v; ++i)                 	//For each vertex i
+	{
+		bool mark[t.v];
+		for (int j = 0; j < t.v; ++j)
+		{
+			mark[j] = false;
+		}
+		for (int j = 0; j < t.v; ++j)			  	//Marking all the bags containing i 
+		{
+			for (auto k : b.bag_list[j])
+			{
+				if (k==i)
+				{
+					mark[j] = true;
+					break;
+				}
+			}
+		}
+
+		for (int j = 0; j < t.v; ++j)			 	// Starting bfs with bag j containing i 
+		{
+			for (auto k : b.bag_list[j])
+			{
+				if (i == k)
+				{
+					bool visited[t.v];
+					for (int l = 0; l < t.v; ++l)
+					{
+						visited[l] = false;
+					}
+					list<int> queue;
+
+					visited[j] = true;				// bag j is visited
+					queue.push_back(j);
+
+					while(!queue.empty())
+					{
+						int s = queue.front();
+						queue.pop_front();
+						for (int m = 0; m < t.v; ++m)  // Exploring the child m
+						{
+							if (t.matrix[s][m] == 1 && !visited[m])
+							{
+								for (auto n : b.bag_list[m])
+								{
+									if (n == i)      // If child m contains i then push it to queue
+									{
+										visited[m] = true;
+										queue.push_back(m);
+										break;
+									}
+								}
+							}
+						}
+					}
+
+					for (int l = 0; l < t.v; ++l)
+					{
+						if (mark[l] != visited[l])
+						{
+							return false;
+						}
+					}
+					break;
+				}
+			}
+		}
+	}
+
+
+	for (int i = 0; i < t.v; ++i)     			// For each bag 
+	{
+		for (int j = 0; j < t.v; ++j)
+		{
+			if (i != j)
+			{
+				flag = false;
+				map <int,int> m;
+			    for(auto k : b.bag_list[j])
+			    {
+			        m[k]++;
+			    }
+			    for(auto k : b.bag_list[i])
+			    {
+			        if(m.find(k)==m.end()) 
+			        {
+			        	flag = true;
+			        	break;
+			        }
+			    }
+			    if (!flag)
+			    {
+			    	return false;
+			    }
+			}
+		}
+	}
+
+	return true;
 }

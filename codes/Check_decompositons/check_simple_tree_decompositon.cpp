@@ -222,7 +222,7 @@ bool check_std(graph g, graph t, bags b)
 			    {
 			        if(m.find(k)==m.end()) 		// if a element is not found in second bag then not a suvhset
 			        {
-			        	flag = true;
+			        	flag = true;			// flag = true indicates i is not a subset of j
 			        	break;
 			        }
 			    }
@@ -261,7 +261,7 @@ int main(int argc, char const *argv[])
 		int no_of_edges = stoi(word);
 
 		cout << "v : \t\t" << v << endl;
-		cout << "no of bags : \t" << no_of_edges << endl << endl;
+		cout << "no of edges : \t" << no_of_edges << endl << endl;
 
 		g.v = v;
 		g.no_of_edges = no_of_edges;

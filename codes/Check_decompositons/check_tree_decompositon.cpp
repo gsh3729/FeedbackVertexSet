@@ -233,7 +233,7 @@ int main(int argc, char const *argv[])
 		int no_of_edges = stoi(word);
 
 		cout << "v : \t\t" << v << endl;
-		cout << "no of bags : \t" << no_of_edges << endl << endl;
+		cout << "no of edges : \t" << no_of_edges << endl << endl;
 
 		g.v = v;
 		g.no_of_edges = no_of_edges;
@@ -253,7 +253,7 @@ int main(int argc, char const *argv[])
 	cout << endl;
 	file.close();
 
-	file.open("t5.txt", ios::in);
+	file.open("t2.txt", ios::in);
 	cout << "###########Tree##########" << endl;
 
 	if (file.is_open())
