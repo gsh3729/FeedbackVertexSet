@@ -19,6 +19,12 @@ class graph
 		matrix[a][b] = 1;
 		matrix[b][a] = 1;
 	}
+	int newVertex()
+	{
+		v++;
+		// bag_list.push_back(NULL); // empty bag
+		return v; // check v or v-1
+	}
 	void print_matrix()
 	{
 		cout << "------Adjacent matrix-------" << endl;
@@ -76,69 +82,221 @@ public:
 class node
 {
 	public:
+	int number;	
 	vector<node *> child;
 	vector<int > sack;
 };
 
-node *newNode(vector<int> key)    								//check whether child and sack are null when new node is called
+node *newNode(int number, vector<int> key)    								//check whether child and sack are null when new node is called
 { 
    	node *temp = new node; 
+   	temp->number = number;
 	temp->sack = key;
    	return temp; 
 }
 
-
-nice_tree_decomposition(graph g, graph t, bags b)
+vector<int> find_leaves(graph t, int root_vertex)
 {
-	vector<int> collection;
-	node* root = newNode(collection); // check null is there or not for root
-
-	node* temp = root;
-	int root_vertex=0;
-	for(auto i: b.bag_list[root_vertex])									// what if bag0 is disconnected
-	{															// keep a loop over vertex 
-		collection.push_back(i);
-		node* x = newNode(collection);
-		temp->child.pushback(x);
-		temp = x;
+	bool visited[t.v];
+	for (int i = 0; i < t.v; ++i)
+	{
+		visited[i] = false;
 	}
+	list<int> queue;
 
+	visited[root_vertex] = true;				
+	queue.push_back(root_vertex);
 
-		int child_size=0;
-		for (int i = 0; i < t.v; ++i)
+	while(!queue.empty())
+	{
+		int s = queue.front();
+		bool flag=false;
+		queue.pop_front();
+		for (int m = 0; m < t.v; ++m)  
 		{
-			if (t.matrix[root_vertex][i]==1)
+			if (t.matrix[s][m] == 1 && !visited[m])
 			{
-				child_size++;
+				flag = true;
+				visited[m] = true;
+				queue.push_back(m);
 			}
 		}
-		if (child_size == 0)
-		{ // leaf node
-
-		}
-		else if (child_size == 1)
-		{ // check intersection vertices
-			intersection();
-			intro();
-			forget();
-		}
-		else if (child_size > 1)
+		if (flag == false)
 		{
-			convert_binary();   									// t have to be changed but changes wont reflect back
-			temp->child.push_back( );
-			temp->child.push_back( );
+			leaves.push_back(s);
 		}
+	}
+
+	return leaves;
+}
+
+node* convert_graph_tree(graph t, int root_tree, bags b)
+{
+	bool visited[t.v];
+	for (int i = 0; i < t.v; ++i)
+	{
+		visited[i] = false;
+	}
+	list<int> queue;
+
+	visited[root_tree] = true;				
+	node* root = newNode(root_tree, b.bag_list[root_tree]);
+	queue.push_back(make_tuple(root_tree, root));
+
+	while(!queue.empty())
+	{
+		int s;node* x;
+		tie(s, x) = queue.front();
+		queue.pop_front();
+		for (int m = 0; m < t.v; ++m)  
+		{
+			if (t.matrix[s][m] == 1 && !visited[m])
+			{
+				visited[m] = true;
+				node* temp = newNode(m, b.bag_list[m]);
+				queue.push_back(make_tuple(m, temp));
+				x.child.push_back(temp);
+			}
+		}
+	}
+
+	return root;
+}
+
+void traverse(node* root) // modified root
+{ 
+    int x = root.child.size();
+    if (x==0)
+    {
+    	return;
+    }
+
+    if (x > 2)
+    {
+    	node* temp = newVertex( ,root.sack);				// include vertex number
+    	vector<node*> y;
+    	for (int i = 1; i < root.child.size(); ++i)
+    	{
+    		y.push_back(root.child[i]);
+    	}
+    	temp.child = y;
+    	root.child.erase(1,x);
+    	traverse(temp);
+    }
+
+	for(auto i: root.child)
+	{
+		traverse(i); // & 
+	} 
+} 
+
+void make_bags_equal(node* root)
+{
+	int x = root.child.size();
+	if (x == 0)
+	{
+		return;
+	}
+	if (x == 2)
+	{
+		node* temp1 = newVertex( ,root.sack);
+		temp1.child = root.child[0];
+
+		node* temp2 = newVertex( ,root.sack);
+		temp2.child = root.child[1];
+
+		root.child[0] = temp1;
+		root.child[1] = temp2;
+	}
+
+	for (auto i: root.child)
+	{
+		make_bags_equal(i); // &
+	}
+}
+
+void introduce_forget(node* root)
+{
+	sort(a);
+	sort(b);
+	std::set_difference(a.begin(), a.end(), b.begin(), b.end(), std::inserter(a_b, a_b.begin()));
+	std::set_difference(b.begin(), b.end(), a.begin(), a.end(), std::inserter(b_a, b_a.begin()));	
+
+
+
+	if (a_b.size() == a.size())
+	{
+		for (auto i: a)
+		{		
+			a.erase(0);								//check if it reflects in tree
+			node* temp = newVertex( ,a);
+			a.child.clear();						//check if it reflects in tree
+			a.child.push_back(temp);
+			temp.child.push_back(b);
+		}
+		for (auto i: b)
+		{
+			push_back();
+		}
+	}
+	else if (a_b.size()>0)
+	{
+
+	}
+}
+
+tuple <graph, bags> nice_tree_decomposition(graph t, bags b)
+{
+	for (int i = 0; i < t.v; ++i)
+	{
+		for (int j = 0; j < t.v; ++j)
+		{
+			if (t.matrix[i][j] == 1)
+			{
+				root_vertex = i;
+			}
+		}	
+	}
+
+	vector<int> leaves = find_leaves(t, root_vertex);
+	
+	int root_tree = t.newVertex();
+	t.matrix[root_tree][root_vertex] = 1;
+	t.matrix[root_vertex][root_tree] = 1;
+	b.bag_list.push_back(NULL);
+
+	for(auto i: leaves)
+	{
+		int x = t.newVertex();
+		t.matrix[x][i] = 1;
+		t.matrix[i][x] = 1;
+		b.bag_list.push_back(NULL);
+	}
+
+	node* root = convert_graph_tree(t, root_tree, b); //check whether modified t,b is sending or not
+
+	traverse(&root);				// every node max two children
+
+	make_bags_equal(&root);
+	
+	introduce_forget(&root);
+}
+
+find_closest_node(node* root)
+{
+	
 }
 
 extended_ntd()
 {
 	for (int i = 0; i < t.v; ++i)									// first convert ntd to have edges in them 
 	{
-		for (int j = 0; j < t.v; ++j)
+		for (int j = 0; j < i; ++j)
 		{
 			if (t.matrix[i][j] == 1)								// check 2 triangle matrix
 			{
 				b = find_closest_node();
+
 				c = newNode();
 				c.child = b;
 				b.parent.child = c;
@@ -498,6 +656,49 @@ bool check_td(graph g, graph t, bags b)
 	return true;
 }
 
+
+
+nice_tree_decomposition(graph g, graph t, bags b)
+{
+	vector<int> collection = NULL;
+	node* root = newNode(collection); // check null is there or not for root
+
+	node* temp = root;
+	int root_vertex=0;
+	for(auto i: b.bag_list[root_vertex])									// what if bag0 is disconnected
+	{															// keep a loop over vertex 
+		collection.push_back(i);
+		node* x = newNode(collection);
+		temp->child.pushback(x);
+		temp = x;
+	}
+
+
+		int child_size=0;
+		for (int i = 0; i < t.v; ++i)
+		{
+			if (t.matrix[root_vertex][i]==1)
+			{
+				child_size++;
+			}
+		}
+		if (child_size == 0)
+		{ // leaf node
+
+		}
+		else if (child_size == 1)
+		{ // check intersection vertices
+			intersection();
+			intro();
+			forget();
+		}
+		else if (child_size > 1)
+		{
+			convert_binary();   									// t have to be changed but changes wont reflect back
+			temp->child.push_back( );
+			temp->child.push_back( );
+		}
+}
 
 
 
