@@ -79,10 +79,10 @@ void short_circuit_degree_two_vertices(graph g)
 			g.matrix[adj_vertices[1]][adj_vertices[0]] = 1;
 			g.shift_matrix(i);
 		}
-	}
+	}													// continous short circuit cascading updates
 }
 
-void preprocessing_rules()
+void preprocessing_rules()								// check whether all rules are applied exhaustively
 {
 	int reduce_parameter=0;
 	delete_isolated_vertices(&g);     // degree as input 0 and 1
@@ -90,29 +90,6 @@ void preprocessing_rules()
 	reduce_parameter = delete_loops(&g);
 	k = k-reduce_parmater;
 	short_circuit_degree_two_vertices(&g);
-}
-
-tuple<int,int> pick_edge(graph g)
-{
-
-}
-
-int pick_vertex(int u, int v)
-{
-	int x = rand() % 2;
-	if (x==0)
-	{
-		return u;
-	}
-	else if(x==1)
-	{
-		return v;
-	}
-}
-
-vector<vector<int>> find_cycles(graph g)
-{
-	
 }
 
 bool check_fvs(graph g, vector<int> fvs)
@@ -144,22 +121,54 @@ bool check_fvs(graph g, vector<int> fvs)
 	}
 }
 
-void randomised_fvs(graph g, int k)
+vector<int> find_vertex_order(graph g, int k)
+{
+	vector<int> degree;
+	for (int i = 0; i < g.v; ++i)
+	{
+		v_degree = 0;
+		for (int j = 0; j < g.v; ++j)
+		{
+			if (g.matrix[i][j] == 1)
+			{
+				v_degree++;
+			}
+		}
+		degree.push_back(degree);
+	}
+
+	sort(degree, degree+g.v);
+
+	pair<int, char> pairt[n]; 
+    for (int i = 0; i < g.v; i++)  
+    { 
+        pairt[i].first = degree[i]; 
+        pairt[i].second = i; 
+    } 
+    sort(pairt, pairt + g.v, greater<int>());
+    degree.clear();
+    for (int i = 0; i < 3*k; i++)  
+    { 
+        degree.push_back(pairt[i].second); 
+    }
+
+    return degree;
+}
+
+bool fvs(graph g, int k)				// should we branch at every step
 {
 	int parameter = k; 
 	int u=0, v=0, x=0;
-	vector<int> fvs;
-	for (int i = 0; i < parameter; ++i)
+
+	preprocessing_rules(&g, k);					// graph g has min degree 3
+
+	vector<int> vertex_order = find_vertex_order(g);
+
+	for (auto i: vertex_order)
 	{
-		k = preprocessing_rules(&g, k);
-		tie(u,v) = pick_edge(g);
-		x = pick_vertex(u, v);
-		fvs.push_back(x);
-		g.shift_matrix(x);
-	}
-	if(check_fvs(g, fvs))
-	{
-		cout << "Feedback vertex set size : " << fvs.size() << endl;
+		graph g_dash = g;				// check whether declaration is crct while iterating
+		g_dash.shift_matrix(i);
+		fvs(g_dash, k-1);
 	}
 }
 

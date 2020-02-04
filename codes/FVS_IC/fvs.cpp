@@ -92,29 +92,6 @@ void preprocessing_rules()
 	short_circuit_degree_two_vertices(&g);
 }
 
-tuple<int,int> pick_edge(graph g)
-{
-
-}
-
-int pick_vertex(int u, int v)
-{
-	int x = rand() % 2;
-	if (x==0)
-	{
-		return u;
-	}
-	else if(x==1)
-	{
-		return v;
-	}
-}
-
-vector<vector<int>> find_cycles(graph g)
-{
-	
-}
-
 bool check_fvs(graph g, vector<int> fvs)
 {
 	map<int,int> fvs_map;
@@ -144,23 +121,17 @@ bool check_fvs(graph g, vector<int> fvs)
 	}
 }
 
-void randomised_fvs(graph g, int k)
+
+
+bool fvs(graph g, int k)				// should we branch at every step
 {
 	int parameter = k; 
 	int u=0, v=0, x=0;
-	vector<int> fvs;
-	for (int i = 0; i < parameter; ++i)
-	{
-		k = preprocessing_rules(&g, k);
-		tie(u,v) = pick_edge(g);
-		x = pick_vertex(u, v);
-		fvs.push_back(x);
-		g.shift_matrix(x);
-	}
-	if(check_fvs(g, fvs))
-	{
-		cout << "Feedback vertex set size : " << fvs.size() << endl;
-	}
+
+	preprocessing_rules(&g, k);					// graph g has min degree 3
+
+
+	
 }
 
 
