@@ -1,99 +1,15 @@
-#include <graph_input.h>
-#include <randomised_fvs.h>
-#include <graph.h>
 #include <bits/stdc++.h>
+using namespace std;
+#include "graph.h"
+#include "graph_input.h"
+#include "branching_vc.h"	
 
-
-int find_max_degree(graph g)
-{
-	int max_degree=-1;
-	for (int i = 0; i < g.v; ++i)
-	{
-		degree=0;
-		for (int j = 0; j < g.v; ++j)
-		{
-			if (g.matrix[i][j]==1)
-			{
-				degree++;
-			}
-		}
-		max_degree = max(max_degree, degree);
-	}
-	return max_degree;
-}
-
-void branching(graph g, int k)
-{
-	int max_degree = find_max_degree(g);
-
-	if (max_degree==0 && k>=0)
-	{
-		return true;
-	}
-
-	if (k<0)
-	{
-		return false;
-	}
-
-	graph g_1 = g;
-	g_1.shift_matrix(v);
-	branching(g_1, k-1);
-
-	graph g_2 = g;
-	int degree = 0;
-	for (int i = 0; i < g.v; ++i)
-	{
-		if (g.matrix[v][i] == 1)
-		{
-			g_2.shift_matrix(i);
-			degree++;
-		}
-	}
-	branching(g_2,k-degree);
-}
-
-
-
-bool branching_vc(graph g, int k)
-{
-	graph g_1, g_2;
-	tie(g_1, g_2) = preprocessing_rules(g);
-	return branching(g_1,k) || branching(g_2,k);
-}
-
-
-int main(int argc, char const *argv[])
-{
-	graph g = read_file();
-	g.print_matrix();
-
-	int k=4;
-
-	branching_vc(g,k);
-
-	return 0;
-}
-
-tuple<graph, graph> preprocessing_rules(graph g)
-{
-	int number_of_vertices_deleted=0;
-
-	delete_isolated_vertices(&g);     // degree as input 0 and 1
-	number_of_vertices_deleted = delete_high_degree_vertices(&g,k);
-	k = k-number_of_vertices_deleted;
-	number_of_vertices_deleted = add_ngbrs_degree_one(&g);
-	k = k-number_of_vertices_deleted;
-	number_of_vertices_deleted = degree_two_vertices(g);
-	k = k-number_of_vertices_deleted;
-}
-
-void delete_isolated_vertices(graph g)
+void delete_isolated_vertices(graph& g)
 {
 	int degree=0;
-	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down // two loops two sizes might be different
+	for (int i = 0; i < g.v; ++i)						
 	{
-		degree = 0;										// note all degree 0 vertices 
+		degree = 0;										 
 		for (int j = 0; j < g.v; ++j)
 		{
 			if (g.matrix[i][j]==1)
@@ -104,17 +20,18 @@ void delete_isolated_vertices(graph g)
 		if (degree == 0)
 		{
 			g.shift_matrix(i);
+			i--;
 		}
 	}
 }
 
-int delete_high_degree_vertices(graph g, int k)
+int delete_high_degree_vertices(graph& g, int k)
 {
 	int degree=0;
 	int number_of_vertices_deleted = 0;
-	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down
+	for (int i = 0; i < g.v; ++i)						
 	{
-		degree = 0;										// note all degree 0 vertices
+		degree = 0;										
 		for (int j = 0; j < g.v; ++j)
 		{
 			if (g.matrix[i][j]==1)
@@ -122,9 +39,10 @@ int delete_high_degree_vertices(graph g, int k)
 				degree++;
 			}
 		}
-		if (degree >= k+1)								// check k+1
+		if (degree >= k+1)								
 		{
 			g.shift_matrix(i);
+			i--;
 			number_of_vertices_deleted++;
 		}
 	}
@@ -133,14 +51,15 @@ int delete_high_degree_vertices(graph g, int k)
 }
 
 
-int add_ngbrs_degree_one(graph g)
+int add_ngbrs_degree_one(graph& g)
 {
 	int degree=0;
+	int number_of_vertices_solution=0;
 	int number_of_vertices_deleted=0;
-	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down
+	for (int i = 0; i < g.v; ++i)						
 	{
 		degree = 0;
-		vector<int> adj_vertices;										// note all degree 0 vertices
+		vector<int> adj_vertices;										
 		for (int j = 0; j < g.v; ++j)
 		{
 			if (g.matrix[i][j]==1)
@@ -151,21 +70,25 @@ int add_ngbrs_degree_one(graph g)
 		}
 		if (degree == 1)
 		{
-			number_of_vertices_deleted++;
-			g.shift_matrix(i);						// check to delete or not
+			number_of_vertices_solution++;			// add ngbr to soln and delete vertex
+			g.shift_matrix(adj_vertices[0]);		// check to delete or not // if nbr is removed then edge with i is removed
+			if (i>adj_vertices[0])
+			{
+				i--;
+			}
 		}
 	}
-	return number_of_vertices_deleted;
+	return number_of_vertices_solution;
 }
 
 
-tuple<int,vector<graph>> degree_two_vertices(graph g)
+int degree_two_vertices(graph& g)
 {
 	int degree=0;
-	vector<graph> graph_reductions;
-	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down
+	int number_of_vertices_solution=0;	
+	for (int i = 0; i < g.v; ++i)						
 	{
-		degree = 0;										// note all degree 0 vertices
+		degree = 0;										
 		vector<int> adj_vertices;						// check scope
 		for (int j = 0; j < g.v; ++j)
 		{
@@ -182,33 +105,153 @@ tuple<int,vector<graph>> degree_two_vertices(graph g)
 				g.shift_matrix(adj_vertices[0]);
 				g.shift_matrix(adj_vertices[1]);
 				g.shift_matrix(i);	
-				number_of_vertices_deleted = number_of_vertices_deleted+2;
+				if (i<adj_vertices[0] && i<adj_vertices[1])
+				{
+					i--;
+				}
+				else if ((i>adj_vertices[0] && i<adj_vertices[1]) || (i>adj_vertices[1] && i<adj_vertices[0]))
+				{
+					i=i-2;
+				}
+				else if (i>adj_vertices[0] && i>adj_vertices[1])
+				{
+					i=i-3;
+				}
+				number_of_vertices_solution = number_of_vertices_solution+2;
 			}
 			else
 			{
-				graph g_dash = g;
-				vector<int> ngbrs;
 				for (int x = 0; x < g.v; ++x)
 				{
-					if (g_dash.matrix[adj_vertices[1]][x] == 1 && x!=i)
+					if (g.matrix[adj_vertices[1]][x]==1 && x!=i)
 					{
-						ngbrs.push_back(x);
+						g.matrix[adj_vertices[0]][x] = 1;
+						g.matrix[x][adj_vertices[0]] = 1;
 					}
-				}
-				for (auto x: ngbrs)
+				}	
+				g.shift_matrix(i);	
+				g.shift_matrix(adj_vertices[1]);
+				if (i<adj_vertices[1])
 				{
-					g_dash.matrix[adj_vertices[0]][x] = 1;
-					g_dash.matrix[x][adj_vertices[0]] = 1;
+					i--;
 				}
-				g_dash.shift_matrix(i);	
-				g_dash.shift_matrix(adj_vertices[1]);	
-				number_of_vertices_deleted = number_of_vertices_deleted+1;			// reduced by 1 only
-				graph_reductions.push_back(g_dash);		// will g_dash be see outside as its scope is over
-
-
+				else if (i>adj_vertices[1])
+				{
+					i=i-2;
+				}
+				number_of_vertices_solution = number_of_vertices_solution+1;			
 			}
 		}
 	}
+
+	return number_of_vertices_solution;
 }
+
+
+void preprocessing_rules(graph& g, int& k)
+{
+	int number_of_vertices_deleted=0, number_of_vertices_solution=0;
+
+	delete_isolated_vertices(g);     
+	number_of_vertices_deleted = delete_high_degree_vertices(g,k);
+	k = k-number_of_vertices_deleted;
+	number_of_vertices_solution = add_ngbrs_degree_one(g);
+	k = k-number_of_vertices_solution;
+	number_of_vertices_solution = degree_two_vertices(g);
+	k = k-number_of_vertices_solution;
+}										
+
+tuple<int,int> find_max_degree(graph g)
+{
+	int max_degree=-1, max_degree_vertex=-1;
+	for (int i = 0; i < g.v; ++i)
+	{
+		int degree=0;
+		for (int j = 0; j < g.v; ++j)
+		{
+			if (g.matrix[i][j]==1)
+			{
+				degree++;
+			}
+		}
+		if (degree > max_degree)
+		{
+			max_degree = degree;
+			max_degree_vertex = i;
+		}
+	}
+	return make_tuple(max_degree, max_degree_vertex);
+}
+
+bool branching(graph g, int k)
+{
+	int max_degree, max_degree_vertex;
+	tie(max_degree, max_degree_vertex) = find_max_degree(g);
+
+	if (max_degree==0 && k>=0)
+	{
+		return true;
+	}
+
+	if (k<0)
+	{
+		return false;
+	}
+
+	graph g_1 = g;
+	g_1.shift_matrix(max_degree_vertex);
+	// g_1.print_matrix();
+
+
+	graph g_2 = g;
+	int degree = 0;
+
+	for (int i = 0; i < g_2.v; ++i)
+	{
+		if (g_2.matrix[max_degree_vertex][i] == 1)
+		{
+			g_2.shift_matrix(i);
+			i--;
+			degree++;
+		}
+	}
+	// g_2.print_matrix();
+	
+	return branching(g_1, k-1) || branching(g_2,k-degree);
+}
+
+
+ 
+bool branching_vc(graph g, int k)
+{
+	preprocessing_rules(g,k);
+	// cout << "preprocessing done : " << k <<endl;
+	// g.print_matrix();
+	return branching(g,k);
+}
+
+
+int main(int argc, char const *argv[])
+{
+	graph g = read_file();
+
+	for (int k = 2*g.v/3; k>0; --k)
+	{
+		// k=3;
+		if (branching_vc(g,k))
+		{
+			cout << "Given G has a vertex cover of size " << k << endl;
+		}
+		else
+		{
+			cout << "Given G does not has a vertex cover of size " << k << endl;
+		}
+		// break;
+	}
+	return 0;
+}
+
+
+
 
 
