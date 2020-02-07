@@ -6,18 +6,18 @@ class node
 	public:
 	int data;
 	vector<node *> child;
-	int a;
-	int b;
-	int c;
+	int gamma;
+	int lambda;
+	int delta;
 };
 
 node *newNode(int key) 
 { 
    node *temp = new node; 
    temp->data = key; 
-   temp->a = 0;
-   temp->b = 0;
-   temp->c = 0;
+   temp->gamma = 0;
+   temp->lambda = 0;
+   temp->delta = 0;
    return temp; 
 }
 
@@ -27,33 +27,36 @@ int min_dominating_set(node* root)
 {
 	if (root->child.empty())
 	{
-		root-> a = root->data;
-		return root->a;
+		root->gamma = 1;
+		root->lambda = 0;
+		root->delta = 1;
+		
+		return root->gamma;
 	}
 
-	int a=0,b=0,c=0;
-	
+	int gamma_sum=0,lambda_sum=0,delta_sum=0;
 
 	for (auto i : root->child)
 	{
-		int temp = min_dominating_set(i);
+		min_dominating_set(i);
 
-		c = c + i->c;
-		b = b + i->b;
-		a = a + i->a;
+		delta_sum = delta_sum + i->c;
+		lambda_sum = lambda_sum + i->b;
+		gamma_sum = gamma_sum + i->a;
 	}
 
-	root->c = 1+b;
-	root->b = min(a, 1+b);
+	root->delta = 1+lambda_sum;
+	root->lambda = min(gamma_sum, 1+lambda_sum);
 
+	int temp=0;
 	for (auto i : root->child)
 	{
-		c = min(c, i->c + a - i->a);
+		temp = min(temp, i->delta + gamma_sum - i->gamma);
 	}
 
-	root->a = min(1+b, root->data + b) ;
+	root->gamma = min(1+lambda_sum, temp) ;
 
-	return root->a;
+	return root->gamma;
 }
 
 int main(int argc, char const *argv[])
