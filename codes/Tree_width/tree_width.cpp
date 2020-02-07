@@ -195,6 +195,54 @@ int compute_width(vector<vector<int>> v)
 	return result-1;
 }
 
+bool is_cycle(graph t, int v, bool visited[], int parent)
+{
+	visited[v] = true;
+
+	for (int i = 0; i < t.v; ++i)
+	{
+		if (t.matrix[v][i]==1)
+		{
+			if (!visited[i])
+			{
+				if (is_cycle(t,i,visited,v))
+				{
+					return true;
+				}
+			}
+			else if (i != parent)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool check_tree(graph t)
+{
+	bool *visited = new bool[t.v];
+	for (int i = 0; i < t.v; ++i)
+	{
+		visited[i] = false;
+	}
+
+	if (is_cycle(t, 0, visited, -1))
+	{
+		return false;
+	}
+
+	for (int i = 0; i < t.v; ++i)
+	{
+		if (!visited[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
 
 int opt_tree_decomposition(graph g)
 {
@@ -247,6 +295,12 @@ int opt_tree_decomposition(graph g)
 				tie(x, y) = edge_map[k];							
 				t.add_edge(x, y);
 			}					// a tree is formed
+
+			if (check_tree(t))
+			{
+				t.clear_matrix();
+				continue;
+			}
 
 			cout << "A tree is formed from selecting the edges" << endl;
 
