@@ -30,7 +30,7 @@ int min_dominating_set(node* root)
 		root->gamma = 1;
 		root->lambda = 0;
 		root->delta = 1;
-		
+
 		return root->gamma;
 	}
 
@@ -40,15 +40,15 @@ int min_dominating_set(node* root)
 	{
 		min_dominating_set(i);
 
-		delta_sum = delta_sum + i->c;
-		lambda_sum = lambda_sum + i->b;
-		gamma_sum = gamma_sum + i->a;
+		delta_sum = delta_sum + i->delta;
+		lambda_sum = lambda_sum + i->lambda;
+		gamma_sum = gamma_sum + i->gamma;
 	}
 
-	root->delta = 1+lambda_sum;
-	root->lambda = min(gamma_sum, 1+lambda_sum);
+	root->delta = 1+lambda_sum;                    
+	root->lambda = min(gamma_sum, 1+lambda_sum);    
 
-	int temp=0;
+	int temp=100000;
 	for (auto i : root->child)
 	{
 		temp = min(temp, i->delta + gamma_sum - i->gamma);
@@ -65,9 +65,9 @@ int main(int argc, char const *argv[])
 	node *root = newNode(4);
 	(root->child).push_back(newNode(1)); 
    	(root->child).push_back(newNode(1)); 
-   	// (root->child).push_back(newNode(1));
-   	(root->child[0]->child).push_back(newNode(1)); 
-   	(root->child[0]->child).push_back(newNode(1));
+   	(root->child).push_back(newNode(1));
+   	// (root->child[0]->child).push_back(newNode(1)); 
+   	// (root->child[0]->child).push_back(newNode(1));
  //   	(root->child[2]->child).push_back(newNode(32)); 
 	// (root->child[2]->child).push_back(newNode(18)); 
  //   	(root->child[2]->child).push_back(newNode(12));
