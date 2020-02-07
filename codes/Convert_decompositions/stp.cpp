@@ -385,7 +385,7 @@ tuple <int, int> check_subset(graph t, bags b)
 	{
 		for (j = 0; j < t.v; ++j)				// every bag combination
 		{
-			if (i != j)
+			if (i != j && t.matrix[i][j]==1)
 			{
 				flag = false;
 				map <int,int> m;
@@ -412,74 +412,53 @@ tuple <int, int> check_subset(graph t, bags b)
 	return make_tuple(-1, -1);
 }
 
-void modify_tree(graph t, int parent, int child, bags b)
-{
-	int i = parent, j = child;
-	t.matrix[i][j] = 0;
-	t.matrix[j][i] = 0;
-	for (int k = 0; k < t.v; ++k)
-	{
-		if (t.matrix[k][j] == 1)
-		{
-			t.matrix[i][k] = 1;
-			t.matrix[k][i] = 1;
-			t.matrix[k][j] = 0;
-			t.matrix[j][k] = 0;
-		}
-	}
-
-	int x=j;
-	while (x < t.v)
-	{ 
-        for (int y = 0; y < t.v; ++y) 
-        { 
-            t.matrix[y][x] = t.matrix[y][x + 1]; 
-        } 
-
-        for (int y = 0; y < t.v; ++y) { 
-            t.matrix[x][y] = t.matrix[x + 1][y]; 
-        } 
-        x++; 
-    }
-
-	b.bag_list.erase(b.bag_list.begin() + j);
-}
-
 
 tuple <graph, bags> simple_tree_decomposition(graph t, bags b)
 {
 	int i,j;
-	bool visited[t.v];
-	for (int l = 0; l < t.v; ++l)
+	while(1)
 	{
-		visited[l] = false;
-	}
-	list<int> queue;
-
-	visited[0] = true;				// bag j is visited
-	queue.push_back(0);
-
-	while(!queue.empty())
-	{
-		int i = queue.front();
-		queue.pop_front();
-		for (int j = 0; j < t.v; ++j)  // Exploring the child m
+		tie(i,j) = check_subset(t, b);  
+		if (i==-1 && j==-1)
 		{
-			if (t.matrix[i][j] == 1 && !visited[j])
+			break;
+		}
+		else 									// j is a subset of i
+		{
+			t.matrix[i][j] = 0;
+			t.matrix[j][i] = 0;
+			for (int k = 0; k < t.v; ++k)
 			{
-				if (check_subset(i,j) > 0)
+				if (t.matrix[k][j] == 1)
 				{
-					modify_tree(t,i,j);
-				}
-				else if (check_subset(i,j) < 0)
-				{
-					modify_tree(t,parent[i],j);
-				}
-				else
-				{
-					queue.push_back(j);
+					t.matrix[i][k] = 1;
+					t.matrix[k][i] = 1;
+					t.matrix[k][j] = 0;
+					t.matrix[j][k] = 0;
 				}
 			}
+
+			
+			int x=j;
+			while (x < t.v)
+			{ 
+	            for (int y = 0; y < t.v; ++y) 
+	            { 
+	                t.matrix[y][x] = t.matrix[y][x + 1]; 
+	            } 
+
+	            for (int y = 0; y < t.v; ++y) { 
+	                t.matrix[x][y] = t.matrix[x + 1][y]; 
+	            } 
+	            x++; 
+	        }
+
+			// cout << "after shifting" << endl;
+			// t.print_matrix();
+
+			b.bag_list.erase(b.bag_list.begin() + j);
+			t.v--;
+
 		}
 	}
 	
