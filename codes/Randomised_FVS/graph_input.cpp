@@ -1,5 +1,6 @@
-#include <graph.h>
 #include <bits/stdc++.h>
+using namespace std;
+#include "graph_input.h"
 
 graph read_file()
 {
@@ -8,7 +9,7 @@ graph read_file()
 
 	graph g(0, 0);
 
-	file.open("g1.txt", ios::in);
+	file.open("g2.txt", ios::in);
 	cout << "###########Graph##########" << endl;
 
 	if (file.is_open())
@@ -22,7 +23,7 @@ graph read_file()
 		int no_of_edges = stoi(word);
 
 		cout << "v : \t\t" << v << endl;
-		cout << "no of bags : \t" << no_of_edges << endl << endl;
+		cout << "no of edges : \t" << no_of_edges << endl << endl;
 
 		g.v = v;
 		g.no_of_edges = no_of_edges;
@@ -41,4 +42,6 @@ graph read_file()
 	g.print_matrix();
 	cout << endl;
 	file.close();
+
+	return g;
 }
