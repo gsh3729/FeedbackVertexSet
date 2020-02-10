@@ -56,3 +56,24 @@ void graph :: shift_matrix(int x)
     }
     v--;
 }
+
+bool graph :: is_empty()
+{
+	if (v <= 0)
+	{
+		return true;
+	}
+
+	for (int i = 0; i < v; ++i)
+	{
+		for (int j = 0; j < v; ++j)
+		{
+			if (matrix[i][j] == 1)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}

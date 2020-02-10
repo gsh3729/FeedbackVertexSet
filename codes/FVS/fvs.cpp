@@ -1,9 +1,10 @@
-#include <graph_input.h>
-#include <randomised_fvs.h>
-#include <graph.h>
 #include <bits/stdc++.h>
+using namespace std;
+#include "graph.h"
+#include "graph_input.h"
+#include "fvs.h"
 
-void delete_isolated_vertices(graph g)
+void delete_isolated_vertices(graph& g)
 {
 	int degree=0;
 	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down // two loops two sizes might be different
@@ -19,11 +20,12 @@ void delete_isolated_vertices(graph g)
 		if (degree == 0)
 		{
 			g.shift_matrix(i);
+			i--;
 		}
 	}
 }
 
-void delete_degree_one_vertices(graph g)
+void delete_degree_one_vertices(graph& g)
 {
 	int degree=0;
 	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down
@@ -39,11 +41,12 @@ void delete_degree_one_vertices(graph g)
 		if (degree == 1)
 		{
 			g.shift_matrix(i);
+			i--;
 		}
 	}
 }
 
-int delete_loops()
+int delete_loops(graph& g)
 {
 	int number_of_loops=0;
 	for (int i = 0; i < g.v; ++i)
@@ -52,13 +55,14 @@ int delete_loops()
 		{
 			number_of_loops++;
 			g.shift_matrix(i);							// what about edges incident to v
+			i--;
 		}
 	}
 
 	return number_of_loops;
 }
 
-void short_circuit_degree_two_vertices(graph g)
+void short_circuit_degree_two_vertices(graph& g)
 {
 	int degree=0;
 	for (int i = 0; i < g.v; ++i)						// g.v is getting changed down
@@ -78,55 +82,40 @@ void short_circuit_degree_two_vertices(graph g)
 			g.matrix[adj_vertices[0]][adj_vertices[1]] = 1;
 			g.matrix[adj_vertices[1]][adj_vertices[0]] = 1;
 			g.shift_matrix(i);
+			i--;
 		}
 	}													// continous short circuit cascading updates
 }
 
-void preprocessing_rules()								// check whether all rules are applied exhaustively
+void preprocessing_rules(graph& g, int& k)								// check whether all rules are applied exhaustively
 {
 	int reduce_parameter=0;
-	delete_isolated_vertices(&g);     // degree as input 0 and 1
-	delete_degree_one_vertices(&g);
-	reduce_parameter = delete_loops(&g);
-	k = k-reduce_parmater;
-	short_circuit_degree_two_vertices(&g);
+	delete_isolated_vertices(g); 
+	cout << "iso" << endl;
+	g.print_matrix();    
+	delete_degree_one_vertices(g);
+	cout << "one" << endl;
+	g.print_matrix();    
+	reduce_parameter = delete_loops(g);
+	k = k-reduce_parameter;
+	cout << "dl" << endl;
+	g.print_matrix();    
+	short_circuit_degree_two_vertices(g);
+	cout << "sc" << endl;
+	g.print_matrix();    
 }
 
-bool check_fvs(graph g, vector<int> fvs)
-{
-	map<int,int> fvs_map;
-	for(auto i:fvs)
-	{
-		fvs_map[i]++;
-	} 
-
-	vector<vector<int>> cycles = find_cycles();
-	
-	bool flag;
-	for(auto i: cycles)
-	{
-		flag = false;
-		for(auto j: i)
-		{
-			if(fvs_map.find(j) != fvs_map.end())
-			{
-				flag =  true;
-				break;
-			}
-		}
-		if(!flag)
-		{
-			return false;
-		}
-	}
-}
+bool sortinrev(const pair<int,int> &a, const pair<int,int> &b) 
+{ 
+       return (a.first > b.first); 
+} 
 
 vector<int> find_vertex_order(graph g, int k)
 {
 	vector<int> degree;
 	for (int i = 0; i < g.v; ++i)
 	{
-		v_degree = 0;
+		int v_degree = 0;
 		for (int j = 0; j < g.v; ++j)
 		{
 			if (g.matrix[i][j] == 1)
@@ -134,18 +123,16 @@ vector<int> find_vertex_order(graph g, int k)
 				v_degree++;
 			}
 		}
-		degree.push_back(degree);
+		degree.push_back(v_degree);
 	}
 
-	sort(degree, degree+g.v);
-
-	pair<int, char> pairt[n]; 
+	vector<pair<int, int>> pairt;
     for (int i = 0; i < g.v; i++)  
     { 
-        pairt[i].first = degree[i]; 
-        pairt[i].second = i; 
+    	pairt.push_back(make_pair(degree[i], i));
     } 
-    sort(pairt, pairt + g.v, greater<int>());
+    sort(pairt.begin(), pairt.end(), sortinrev);   // check whether sorting is happening to first vertex
+
     degree.clear();
     for (int i = 0; i < 3*k; i++)  
     { 
@@ -155,32 +142,56 @@ vector<int> find_vertex_order(graph g, int k)
     return degree;
 }
 
-bool fvs(graph g, int k)				// should we branch at every step
+bool branching_fvs(graph g, int k)
 {
-	int parameter = k; 
-	int u=0, v=0, x=0;
+	if (k<0)
+	{
+		return false;
+	}
 
-	preprocessing_rules(&g, k);					// graph g has min degree 3
+	if (g.is_empty() && k>=0)
+	{
+		return true;
+	}
 
-	vector<int> vertex_order = find_vertex_order(g);
+	bool result=false;
+	vector<int> vertex_order = find_vertex_order(g,k);
 
 	for (auto i: vertex_order)
 	{
-		graph g_dash = g;				// check whether declaration is crct while iterating
+		graph g_dash = g;				
 		g_dash.shift_matrix(i);
-		fvs(g_dash, k-1);
+		result = result || branching_fvs(g_dash, k-1);
 	}
+
+	return result;
+}
+
+
+bool fvs(graph g, int k)				// should we branch at every step
+{  
+	preprocessing_rules(g, k);					// graph g has min degree 3
+	cout << "processing done : " << k << endl; 
+	g.print_matrix();
+
+	return branching_fvs(g,k);	
 }
 
 
 int main(int argc, char const *argv[])
 {
 	graph g = read_file();
-	g.print_matrix();
 
-	int k;
+	int k=3;
 
-	randomised_fvs(g,k);
+	if (fvs(g,k))
+	{
+		cout << "Given G has a fvs of size " << k << endl;
+	}
+	else
+	{
+		cout << "Given G does not has a fvs of size " << k << endl;
+	}
 
 	return 0;
 }

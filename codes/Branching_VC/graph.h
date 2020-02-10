@@ -15,6 +15,7 @@ class graph 													// shift matrix t.v is there check once
 	void add_edge(int a, int b);
 	void print_matrix();
 	void shift_matrix(int x);
+	bool is_empty();
 };
 
 
