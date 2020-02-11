@@ -23,7 +23,7 @@ graph :: graph(const graph &g1)
 
 void graph :: add_edge(int a, int b)
 {
-	edge_map.insert(edge_number,make_tuple(a,b));
+	edge_map.insert({edge_number,tuple <int,int>{a,b}});
 	edge_number++;
 	matrix[a][b] = 1;
 	matrix[b][a] = 1;

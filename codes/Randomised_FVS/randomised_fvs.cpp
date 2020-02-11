@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+using namespace std;
 #include "graph.h"
 #include "graph_input.h"
 #include "randomised_fvs.h"
@@ -102,13 +103,16 @@ vector<vector<int>> find_cycles(graph g)
 	vector<vector <int>> cycles;
 	vector<int> cycle; 
 	stack <int> included_in_tree_not_explored;
-	included_in_tree_not_explored.push(0);
 	map<int, int> parent;
 	map<int, set<int>> included_in_tree;
 
+	included_in_tree_not_explored.push(0);
+	parent.insert(pair<int,int> {0,0});
+	included_in_tree.insert(pair<int, set<int>>(0,set<int> {0}));
 	while (!included_in_tree_not_explored.empty())
 	{
 		int z = included_in_tree_not_explored.top();
+		// cout << "exploring " << z << endl;
 		included_in_tree_not_explored.pop();
 		for (int i = 0; i < g.v; ++i)
 		{
@@ -116,20 +120,18 @@ vector<vector<int>> find_cycles(graph g)
 			{
 				if (i==z)
 				{
-					cycle.push_back(z);
-					cycles.push_back(cycle);
-					cycle.clear();
+					cycles.push_back(vector<int> {z});
 				}
 				else if (included_in_tree.find(i)==included_in_tree.end())   //new node //avoids parent(already in tree)
 				{
-					set <int> temp;
-					temp.insert(z);
-					included_in_tree.insert(pair<int, set<int>>(i,temp));
+					// cout << "new node found " << i << endl; 
+					included_in_tree.insert(pair<int, set<int>>(i,set<int> {z}));
 					included_in_tree_not_explored.push(i);
 					parent.insert(pair<int, int>(i,z));
 				}
 				else if (included_in_tree[z].find(i)==included_in_tree[z].end()) // found a cycle //only parent and virtual parent 
 				{
+					// cout << "found cycle bcoz of edge " << z << i << endl; 
 					cycle.push_back(i);
 					cycle.push_back(z);
 					int p = parent[z];
@@ -138,13 +140,29 @@ vector<vector<int>> find_cycles(graph g)
 						cycle.push_back(p);
 						p = parent[p];
 					}
+					cycle.push_back(p);
 					cycles.push_back(cycle);
+					cycle.clear();
 					included_in_tree[i].insert(z);
 				}
 			}
 		}
 	}
 	return cycles;
+}
+
+void printing_cycles(graph g)
+{
+	vector<vector<int>> cycles = find_cycles(g);
+	for (auto i : cycles)
+	{
+		for (auto j : i)
+		{
+			cout << j << " ";
+		}
+		cout << endl;
+	}
+	return;
 }
 
 bool check_fvs(graph g, vector<int> fvs)
@@ -178,6 +196,23 @@ bool check_fvs(graph g, vector<int> fvs)
 	return true;
 }
 
+void test_fvs(graph g)
+{
+	vector<int> fvs;
+	// fvs.push_back(0);
+	fvs.push_back(1);
+	// fvs.push_back(2);
+	if(check_fvs(g,fvs))
+	{
+		cout << "Yes" << endl;
+	}
+	else
+	{
+		cout << "No" << endl;
+	}
+
+}
+
 tuple<int,int> pick_edge(graph g)
 {
 	int x = rand() % g.no_of_edges;
@@ -195,29 +230,35 @@ int pick_vertex(int u, int v)
 	{
 		return v;
 	}
+	return x;
 }
 
 void randomised_fvs(graph g, int k)
 {
-	int parameter = k; 
 	int u=0, v=0, x=0;
-	vector<int> fvs;
-	for (int i = 0; i < parameter; ++i)
+	int parameter = k;
+	for (int i = 0; i < pow(4,k); ++i)
 	{
-		preprocessing_rules(g, k);
-		tie(u,v) = pick_edge(g);
-		x = pick_vertex(u, v);
-		fvs.push_back(x);
-		g.shift_matrix(x);
+		cout << i << endl;
+		vector<int> fvs;
+		for (int j = 0; j < parameter; ++j) 		// k will change so need to keep it unupdated
+		{
+			preprocessing_rules(g, k);
+			g.print_matrix();
+			tie(u,v) = pick_edge(g);
+			x = pick_vertex(u, v);
+			fvs.push_back(x);
+			g.shift_matrix(x);
+		}
+		// cout << "fvs" << fvs[0] << endl;
+		if(check_fvs(g, fvs))
+		{
+			cout << "Feedback vertex set size : " << fvs.size() << endl;
+			return;		
+		}	
 	}
-	if(check_fvs(g, fvs))
-	{
-		cout << "Feedback vertex set size : " << fvs.size() << endl;
-	}
-	else
-	{
-		cout << "No instance" << endl;
-	}
+	cout << "No instance" << endl;
+	return;
 }
 
 
@@ -225,9 +266,11 @@ int main(int argc, char const *argv[])
 {
 	graph g = read_file();
 
-	int k=3;
-
+	int k=1;
+	
 	randomised_fvs(g,k);
 
 	return 0;
 }
+
+

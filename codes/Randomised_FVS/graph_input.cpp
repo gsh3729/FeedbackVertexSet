@@ -9,7 +9,7 @@ graph read_file()
 
 	graph g(0, 0);
 
-	file.open("g2.txt", ios::in);
+	file.open("g4.txt", ios::in);
 	cout << "###########Graph##########" << endl;
 
 	if (file.is_open())
