@@ -1,17 +1,92 @@
-\chapter{Review of Prior Works}
+\chapter{Vertex Cover}
 
-Survey comes hear
+% \section{Vertex Cover}
+Definition : Vertex cover of a graph is a set of vertices 
+such that each edge of the graph is incident to at least one vertex of the set.
 
-\section{Section name}
+\section{Branching Vertex Cover}
+Instance : A graph G on n vertices, m edges and integer k. \\
+Question : Does G have a vertex cover of size atmost k? \\
+Parameter : k
 
-write ....
+Reduction Rule 1 : Delete isolated vertex v \\
+Resulting instance : (G-v, k) \\
+(G,k) is an yes-instance iff (G-v,k) is an yes-instance
 
-\section{Conclusion}
+(G,k) is an yes-instance if (G-v,k) is an yes-instance \\
+Adding a isolated vertex v to graph G-v does not change the size of vertex cover as 
+it does not have any edge with other vertices.
 
-This chapter provided details of the some of the existing
-distributed algorithms for constructing a CDS in wireless ad-hoc
-networks. The results of these evaluations are summarized in table
-\ref{table1}. In next chapter, we discuss our distributed
-Algorithm I, for constructing a small backbone in ad-hoc wireless
-network.
+(G-v,k) is an yes-instance if (G,k) is an yes-instance \\
+Removing a isolated vertex v to graph G does not change the size of vertex cover as 
+it does not have any edge with other vertices.
 
+Reduction Rule 2 : Delete high degree vertices($\geq$k) \\
+Resulting instance : (G-v, k-1) \\
+(G,k) is an yes-instance iff (G-v,k-1) is an yes-instance 
+
+(G-v,k-1) is an yes-instance if (G,k) is an yes-instance \\
+If G contains a vertex v of degree more than k, then v should be in
+every vertex cover of size at most k. So we can remove vertex v and decrease the parameter by 1.
+
+(G,k) is an yes-instance if (G-v,k-1) is an yes-instance \\
+If we add a vertex of degree $\geq$ k to graph, then either this vertex should be in solution 
+or all the neighbours of v which are greater than k should be in solution. The later case is not
+possible. So this vertex should definitely in vertex cover. So adding a vertex of degree $\geq$ k leads
+to increase of parameter by 1. 
+
+Reduction Rule 3: Add neighbour of degree-1 vertices to solution \\
+Degree-1 vertex will only have an edge with one other vertex. Either it or its neighbour needs to be in
+solution. Adding the neighbour to solution will be more useful as it may cover some more edges in the
+graph.
+
+Reduction Rule 4 : For degree-2 vertices \\
+Case 1 : If neighbours of degree-2 vertex has an edge between them \\
+Let the degree-2 vertex be v and its neighbour be x and y. \\
+Any vertex cover has at least 2 from {v,x,y}. \\
+If v is included, then v covers 2 edges and to cover edge between x and y we require one of them. \\
+If v is not included, then both of its neighbours should be included. \\
+Resulting instance : (G-\{v,x,y\}, k-2) 
+
+Case 2 : If neighbours of degree-2 vertex does not has an edge between them \\
+(G,k) is an yes-instance iff (G',k-1) is an yes-instance
+
+(G',k-1) is an yes-instance iff (G,k) is an yes-instance \\
+Either v is in minimum vertex cover or x and y are in minimum vertex cover. \\
+If v is in minimum vertex cover \\
+Both x and y will not be in minimum vertex cover. As we are not including x and y,
+all the neighbours of x and y will be in minimum vertex cover. So we can delete this vertex
+from the graph and reduce the parameter by 1.
+
+If x and y are in minimum vertex cover \\
+If x and y are included, then it will cover the edges of v. So now we need to cover only neighbours
+of x and y apart from v. To cover these edges we can remove x and y from the graph and add a vertex 
+z and edges from z to neighbours of x and y apart from v.  
+
+(G,k) is an yes-instance if (G’,k-1) is an yes-instance \\
+Either z in T or z is not in T. \\
+If z is not in minimum vertex cover, then neighbours of x and y will be in solution and edges of vertex 
+needs to be covered. So include v to solution, this will increase the parameter by only 1. \\
+If z is in minimum vertex cover, then we can delete this vertex and include x and y to the solution.
+As x and y will cover all the neighbours of z and also v.\\
+
+Let the final reduced instance be (G,k) and G has a minimum degree-3 vertex. \\
+Recursive Branching Algorithm \\
+Find a vertex v $\in$ V(G) of maximum degree in G. \\
+Either v or N(v) in the vertex cover. \\
+2 branches of (G,k) are (G-v, k-1) and (G-N(v), k-$|N(G)|$). \\
+Apply preprocessing reduction rules to the new reduced instance and continue the same process. \\
+
+Running time = (number of nodes in the search tree) * (time taken at each node) \\
+Time taken at each node is in order of n. \\
+Number of nodes in the search tree = 2l-1, where l is the number of leaves. \\
+
+So Running time is bounded by the number of leaves in the tree. \\
+Let T(k) denote the no. of leaves in the tree rooted at instance with parameter k \\
+T(k) $\leq$ T(k-1) + T(k-3) if k $\geq$ 3 \\
+\vspace{-1.4cm}
+\begin{verbatim}  
+       1 otherwise
+\end{verbatim}
+\vspace{-0.5cm}
+Total running time of the algorithm is $O(1.465^k)$.
