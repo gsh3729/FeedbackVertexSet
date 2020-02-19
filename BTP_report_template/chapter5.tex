@@ -1,0 +1,115 @@
+\chapter{Tree Decomposition}
+
+% \section{Tree Decomposition}
+A tree decomposition of a graph G is a pair (T,B) where T is a tree and $B: V(T) \to 2^{V(G)}$
+satisfies the following \\
+For each vertex v in G, there is a node x in V(T) such that v is in B(x) \\
+For each edge e=\{u, v\} in G, there is a node x in V(T) such that u are v are in B(x) \\
+For each vertex v in G, the set \{x $\in$ V(T) : v $\in$ B(x) \} induces a connected graph \\
+
+\section{Checking Tree Decomposition}
+Question : Given a graph G and a pair (T,B) where T is a tree and B $B: V(T) \to 2^{V(G)}$, 
+ check if (T,B) is a tree decomposition of G
+
+First, we will check whether for every vertex in graph is there a bag that contains
+the vertex.
+
+Thereafter, we will check for each edge whether both the end points of the edge
+are in the same bag.
+
+To verify the third rule, for every vertex v, we do the following checking.
+First we mark all the bags that contains v. Then we will start a modified breadth first search
+from any arbitrary node, which will only explore the children which contains v and mark these 
+vertices as visited. Otherwise we ignore the vertex. 
+Once the search is finished, if the visited vertices are same as the vertices which we marked
+initially then we say that the rule 3 is followed.  
+
+\section{Simple Tree Decomposition}
+A simple tree decomposition (T,B) is one where there is no pair of distinct nodes x 
+and y in T such that B(x) $\subseteq$ B(y)
+
+Question : Given a graph G and a tree decomposition (T,B) of G, 
+check if (T,B) is a simple tree decomposition.
+
+First we will verify whether (T,B) is a tree decomposition or not. If yes,
+then we will try to see if there are any bags such that one is the subset of the another.
+
+\section{Convert to Simple Tree Decomposition}
+Question : Given a graph G and a tree decomposition (T,B) of G, 
+find a simple tree decomposition (T',B') of G such that w(T') $\leq$ w(T).
+
+To convert a tree decomposition in to simple tree decomposition, we need to remove 
+all the nodes of the tree which are subsets of other nodes and connected to the superset node
+directly by an edge.
+
+Find out the bag x which is subset of bag y. Then check if there is edge between x and y in the
+tree. If yes, then remove the node containing bag x from the tree and add the connections between 
+the y and children of x.  
+
+\section{Optimum Tree Decomposition}
+Width of a tree decomposition T = w(T) = max \{ $|B(x)|$ : x $\in$ V(T)\} - 1 \\
+Treewidth of G, tw(G) = min \{w(T) : T is a tree decomposition of G\} 
+
+
+Definition : An optimal tree decomposition of G is a tree decomposition of G of width tw(G) \\
+Question : Given a graph G, compute an optimum tree decomposition of G
+
+To find the optimum tree decomposition, we enumerate on the all the possible tree decomposition
+pairs and find the minimum width.
+
+We start the size of the tree T from 1, and increase till V(G)-1.
+For a particular size n of the tree, a tree consists of n-1 edges. We need to pick n-1 edges
+which forms a tree from the n*(n-1)/2 edges of the complete graph consisting of n vertices. So total 
+atmost 
+$\binom{(n*(n-1)/2)}{n-1}$ number of tree combinations are possible. 
+
+For a fixed tree, we have at most $2^{(n^2)}$ choices of B. 
+
+After choosing a pair of (T,B), we verify whether it is a tree decomposition. If yes, then we will 
+update minimum treewidth if the new width value is minimum.
+
+
+\section{Dominating set}
+
+\subsection{Definition}
+A dominating set in Graph G is a set S of vertices such that N(S)=V(G)
+or every vertex not in S is adjacent to at least one member of S.
+
+\subsection{Dominating set on Trees}
+Problem Statement \\
+Instance : A tree T and an integer K \\
+Question : Does there exist a dominating set of T of size at most K?
+
+To solve this problem we use bottom up approach of dynamic programming.
+We solve the subparts of the problem and use them to get the final solution.\\
+Root T at an arbitrary vertex. Let that root vertex be \textbf{root} \\
+For a vertex v, let $T_v$ denote the subtree of T rooted at v \\ 
+Let $\Gamma(v)$ denote the minimum possible size of a dominating set in $Tv$ \\
+Let $\Lambda(v)$ denote the minimum possible size of a dominating set in $T_v$ 
+that dominates every vertex in $T_v-v$ \\
+Let $\Delta(v)$ denote the minimum possible size of a dominating set in $T_v$ that 
+contains v
+
+$\Gamma(root)$ is the final solution which we need. To get this value, we will start
+solving for the above values from the leaf nodes, which will be used further as we 
+go till root of the tree. 
+
+If v is a leaf, then 
+$\Gamma(v)$ = 1,
+$\Lambda(v)$ = 0,
+$\Delta(v)$ = 1.
+
+
+If v has $v_1, v_2, ....., v_q$ as its children, then 
+
+$\Delta(v)$ = 1 + $\Lambda(v_1)+\Lambda(v_2)+....+\Lambda(v_q)$\\
+$\Delta(v)$ will definitely contain v in its dominating set, so we need not cover children of v. 
+But we should cover all the grand children of v.
+
+$\Lambda(v)$ = min\{ $\Gamma(v_1) + \Gamma(v_2) + .... + \Gamma(v_q)$,  
+$1 + \Lambda(v_1)+\Lambda(v_2)+....+\Lambda(v_q)$ \}
+
+$\Gamma(v)$ = min\{ $1 + \Lambda(v_1)+\Lambda(v_2)+....+\Lambda(v_q)$,
+min\{$\Delta(v_i) + \Sigma_{i \neq j} \Gamma(v_j) : i \in [q] $ \} \}
+
+
