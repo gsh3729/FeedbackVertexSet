@@ -35,6 +35,11 @@
 %\setlength{\topmargin}{-0.900in}
 %\setlength{\oddsidemargin}{-0.125in}
 %\setlength{\evensidemargin}{-0.375in}
+% \setlength{\parindent}{0pt}
+% \setlength{\fboxsep}{10pt}
+% \fbox{%
+%    \rule{4cm}{3cm}
+% }
 
 
 \newtoks\btptitle

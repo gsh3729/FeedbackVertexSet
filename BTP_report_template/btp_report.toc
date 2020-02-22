@@ -1,18 +1,17 @@
-\contentsline {chapter}{List of Figures}{iv}{chapter*.3}
-\contentsline {chapter}{List of Tables}{v}{chapter*.4}
-\contentsline {chapter}{\numberline {1}Vertex Cover}{3}{chapter.1}
-\contentsline {section}{\numberline {1.1}Branching Vertex Cover}{3}{section.1.1}
+\contentsline {chapter}{List of Figures}{iii}{chapter*.3}
+\contentsline {chapter}{List of Tables}{iv}{chapter*.4}
+\contentsline {chapter}{\numberline {1}Vertex Cover}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}Branching Algorithm}{2}{section.1.1}
 \contentsline {chapter}{\numberline {2}Feedback Vertex Set}{7}{chapter.2}
-\contentsline {section}{\numberline {2.1}Branching Feedback Vertex Set}{7}{section.2.1}
-\contentsline {section}{\numberline {2.2}Iterative Compression of Feedback Vertex Set}{11}{section.2.2}
-\contentsline {section}{\numberline {2.3}Randomized Feedback Vertex Set}{12}{section.2.3}
+\contentsline {section}{\numberline {2.1}Branching Algorithm}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}Iterative Compression Algorithm}{10}{section.2.2}
+\contentsline {section}{\numberline {2.3}Randomized Algorithm}{12}{section.2.3}
 \contentsline {chapter}{\numberline {3}Tree Decomposition}{15}{chapter.3}
-\contentsline {section}{\numberline {3.1}Checking Tree Decomposition}{15}{section.3.1}
-\contentsline {section}{\numberline {3.2}Simple Tree Decomposition}{16}{section.3.2}
-\contentsline {section}{\numberline {3.3}Convert to Simple Tree Decomposition}{16}{section.3.3}
-\contentsline {section}{\numberline {3.4}Optimum Tree Decomposition}{16}{section.3.4}
-\contentsline {section}{\numberline {3.5}Dominating set}{17}{section.3.5}
-\contentsline {subsection}{\numberline {3.5.1}Definition}{17}{subsection.3.5.1}
-\contentsline {subsection}{\numberline {3.5.2}Dominating set on Trees}{17}{subsection.3.5.2}
+\contentsline {section}{\numberline {3.1}Simple Tree Decomposition}{15}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Finding a simple tree decomposition}{15}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}Optimum Tree Decomposition}{16}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Finding a optimum tree decomposition}{17}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.3}Dominating set}{17}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Dominating set on Trees}{17}{subsection.3.3.1}
 \contentsline {chapter}{\numberline {4}Conclusion and Future Work}{19}{chapter.4}
 \contentsline {chapter}{References}{21}{chapter.4}

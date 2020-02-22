@@ -1,150 +1,154 @@
-% \chapter{Algorithm II}
+\chapter{Tree Decomposition}
 
-\section{Iterative Compression of Feedback Vertex Set}
+\textbf{Definition} : A tree decomposition of a graph G is a pair (T,B) where T is a tree 
+and $B: V(T) \to 2^{V(G)}$
+satisfies the following 
+\begin{itemize}
+    \item For each vertex v in G, there is a node x in V(T) such that v is in B(x) \vspace{-0.4cm}
+    \item For each edge e=\{u, v\} in G, there is a node x in V(T) such that u are v are in B(x) \vspace{-0.4cm}
+    \item For each vertex v in G, the set \{x $\in$ V(T) : v $\in$ B(x) \} induces a connected graph
+\end{itemize}
 
-Iterative compression is an algorithmic technique for the design of fixed-parameter tractable algorithms,
-in which one element (such as a vertex of a graph) is added to the problem in each step, 
-and a small solution for the problem prior to the addition is used to help find a small 
-solution to the problem after the step.
+\section{Simple Tree Decomposition} 
+\textbf{Definition} : A simple tree decomposition (T,B) is a tree decomposition in which
+there is no pair of distinct nodes x 
+and y in T such that B(x) $\subseteq$ B(y)
+
+\subsection{Finding a simple tree decomposition}
+\fbox{
+ \parbox{15cm}{
+Question : Given a graph G and a tree decomposition pair (T,B) where T is a tree 
+and B $B: V(T) \to 2^{V(G)}$, find a simple tree decomposition (T',B') of G
+}
+}\vspace{0.6cm}
+
+
+First, we have to verify whether the given tree decomposition is a tree decomposition or not.
 
 \begin{enumerate}
-        \item Start with a subgraph induced by a vertex set S of size k, and a solution X 
-        that equals S itself.
-        \item While S $\neq$ V, perform the following steps:
-        \begin{itemize}
-                \item Let v be any vertex of V \ S, and add v to S
-                \item Test whether the (k + 1)-vertex solution Y = X ∪ {x} to S can
-                 be compressed to a k-vertex solution.
-                \item If it cannot be compressed, abort the algorithm: the input graph has no 
-                k-vertex solution.
-                \item Otherwise, set X to the new compressed solution and continue
-                 the loop.
-        \end{itemize}
+    
+\item To verify the first rule of tree decomposition, check for every vertex in graph if there is 
+ a bag that contains the vertex. If its not true for every vertex, then it is not a tree decomposition.   
+
+\item To verify the second rule of tree decomposition, check for each edge in graph if there is 
+ a bag that contains both the end points of the edge. If its not true for every edge,
+ then it is not a tree decomposition.
+
+\item To verify the third rule of tree decomposition, for every vertex v, we do the following checking.
+First we mark all the bags that contains v. Then we will start a modified breadth first search
+from any arbitrary node, which will only explore the children which contains v and mark these 
+vertices as visited. Otherwise we ignore the vertex. 
+Once the search is finished, if the visited vertices are same as the vertices which we marked
+initially then we say that the rule 3 is followed.  
 \end{enumerate}
 
+If it is a tree decomposition, we now further verify if its a simple tree decomposition or not.
+\begin{enumerate}
+\item To verify the rule of simple tree decomposition, check 
+if there are any bags such that one is the subset of the another. 
+\end{enumerate}
+
+If there are no such bags, then we say that the given tree decomposition is a simple tree decomposition 
+Otherwise we remove a node from the tree which has the bag that is subset of other bag and 
+add the edges between the children of removed vertex and the superset node. 
+
+\vspace{0.3cm}
+Total running time of the algorithm is $O(n^{\alpha})$
+
+\section{Optimum Tree Decomposition}
+\textbf{Width of a tree decomposition T} = w(T) = max \{ $|B(x)|$ : x $\in$ V(T)\} - 1 \\
+\textbf{Treewidth of G}, tw(G) = min \{w(T) : T is a tree decomposition of G\} 
 
 
-Instance : Given a graph G and K+1 size solution S \\
-Question: Does there exist a feedback vertex set of G of size at most k?
+\textbf{Definition} : An optimal tree decomposition of a graph G is a tree 
+decomposition of G of width tw(G) 
 
-Let the solution set of size atmost k be R.
+\subsection{Finding a optimum tree decomposition}
+\fbox{
+ \parbox{15cm}{
+    Question : Given a graph G, compute an optimum tree decomposition of G
+ }
+}\vspace{0.6cm}
 
-Divide the set s into 2 parts. One part which contains the vertices from R and other part X which does 
-contain vertices from R.
+To find the optimum tree decomposition, we enumerate on the all the possible tree decomposition
+pairs and find the minimum width.
 
-Total $2^{k+1}$ choices of S $\cap$ R
+\hspace*{1.5cm} We start the size of the tree T from 1, and increase till V(G)-1.
+For a particular size n of the tree, a tree consists of n-1 edges. We need to pick n-1 edges
+which forms a tree from the n*(n-1)/2 edges of the complete graph consisting of n vertices. So total 
+atmost 
+$\binom{(n*(n-1)/2)}{n-1}$ number of tree combinations are possible. 
 
-Let r number of vertices be in X.
+\hspace*{1.5cm} For a fixed tree, we have at most $2^{(n^2)}$ choices of B. 
 
-Now our aim is to find a set of at most r-1 vertices from X and Y (i.e. G-S).
+\hspace*{1.5cm} After choosing a pair of (T,B), we verify whether it is a tree decomposition. If yes, then we will 
+update minimum treewidth if the new width value is minimum.
 
-Reduction :
-Delete all the vertices of degree at most 1 in G
-
-Reduction :
-If there exists any vertex v in Y such that G(X $\cup$ v) contains a cycle,
-then include this vertex in the solution, remove this vertex and decrease the parameter by 1.
-
-Reduction :
-If there is a vertex v in Y of degree 2 in G such
-that at least one neighbor of v in G is from Y, then delete this vertex
-and make its neighbors adjacent
-
-Since Y is a forest, Y has a vertex v of degree at most 1. 
-
-v has $\geq2$ neighbours in Y, otherwise above reduction rules would have been applied.
-And also those two neighbours will be in different components of Y, otherwise above reduction
-rule would have been applied. 
-
-Here we have two possibilities. Either v is in solution or v is not in solution.
-Branch into these possibilities. \\
-If v is in solution, then the reduced instance is (X,Y-$\{v\}$,r-2) \\
-If v is not in solution, then the reduced instance is (X $ \cup \{v\}$ ,Y-$\{v\}$,r-1)
-
-In one branch, r decreases by 1 and in another branch connected components of x decrease by 1.
-
-Let I = r + \#C(X), where \#C(X) is the number of connected components of X. \\
-I $\leq$ k+1+k $\leq$ 2k+1
-
-Let T(I) denote the number of leaves in the tree rooted at instance with measure I.
-
-T(I) $\leq$ 2T(I-1) if I $\geq$ 1 
-\vspace{-0.5cm}
-\begin{verbatim}  
-        1 otherwise
-\end{verbatim}
-\vspace{-0.5cm}
-
-Total running time for disjoint compression algorithm is $O(2^{2k})$
-
-If there exists an algorithm solving Disjoint Feedback Vertex Set in
- Tournaments in time g(k)·n , then there exists an algorithm
-solving Feedback Vertex Set in Tournaments Compression in time
-$\Sigma_{i=0}{k}   \binom{k+1}{i} g(k-i) n^{O(1)}$
-
-If g(k) = $4^k$, then the running time of the algorithm is $O(5^k)$  
+Total running time of the algorithm is $2^{O(n^2)}$
 
 
-\section{Randomized Feedback Vertex Set}
-Instance : Given a graph G and a integer k \\
-Question: Does there exist a feedback vertex set of G of size at most k? \\
-Parameter: k
+\section{Dominating set}
 
-Reduction Rule 1: Delete isolated vertices \\
-Reduction Rule 2: Delete degree-1 vertices \\
-Reduction Rule 3: If there is a loop at a vertex v, delete v from the graph
-and reduce the parameter by 1 \\
-Reduction Rule 4: If there is an edge with multiplicity $>$ 2, reduce it to 2 \\
-Reduction Rule 5: Short circuit degree-2 vertices 
+\textbf{Definition} : 
+A dominating set in Graph G is a set S of vertices such that N(S)=V(G)
+or every vertex not in S is adjacent to at least one member of S.
 
-After applying the reduction rules, graph will have minimum degree 3.
+\subsection{Dominating set on Trees}
+\fbox{
+ \parbox{15cm}{
+    Instance : A tree T and an integer K 
 
-If G is graph with minimum degree $\geq$ 3, then number of edges
-incident to any feedback vertex set S is $> |E(G)|/2$
+    Question : Does there exist a dominating set of T of size at most K?
+ }
+}\vspace{0.6cm}
 
-Let feedback vertex set of G be S and H = G-S \\
-Let E(X) be edges incident to S, E(G) be edges in graph G, E(H) be edges in subgraph H, 
-E(H,S) be edges between H and S.
+To solve this problem we use bottom up approach of dynamic programming.
+We solve the subparts of the problem and use them to get the final solution.
 
-We need to prove that $|E(X)|$ $\geq$ $|E(G)|/2$ \\
-$|E(X)| >  |E(G)|/2$ is equivalent to $|E(X)| > |V(H)|$ \\
-$2|E(X)| > |E(G)| $ \\
-$2|E(X)| > |E(X)|+|E(H)| $ \\
-$|E(X)| > |E(H)| $ \\
-$|E(X)| > |V(H)|$ \\
+\vspace{0.5cm}
+Root T at an arbitrary vertex. Let that root vertex be \textbf{root} \\
+For a vertex v, let $T_v$ denote the subtree of T rooted at v 
 
-Let $V_{\leq 1}$, $V_2$ and $V_{\geq 3}$ denote the set of vertices in V(H) such that they
-have degree at most 1, exactly 2, and at least 3 in H respectively. \\
-$|E(X)| \geq |E(H,S)|$ \\
-$|E(X)| \geq 2|V_{\leq 1}| + |V_2|$ \\
-$|E(X)| > |V_{\leq 1}| + |V_2| + |V_{\geq 3}|$ \\
-$|E(X)| > |V(H)|$ 
+\begin{itemize}    
+\item Let $\Gamma(v)$ denote the minimum possible size of a dominating set in $Tv$ \vspace{-0.4cm}
+\item Let $\Lambda(v)$ denote the minimum possible size of a dominating set in $T_v$ 
+that dominates every vertex in $T_v-v$ \vspace{-0.4cm}
+\item Let $\Delta(v)$ denote the minimum possible size of a dominating set in $T_v$ that 
+contains v
+\end{itemize}
 
-Feedback Vertex Set can be solved in randomized polynomial
-time, with success probability at least $4^{-k}$
+$\Gamma(root)$ is the final solution which we need. To get this value, we start
+solving for the $\Gamma(v)$, $\Lambda(v)$, $\Delta(v)$ values from the leaf nodes, which
+ will be used further as we 
+go till root of the tree. 
 
-Run the following algorithm $4^k$ times. If none of the
-executions return yes, then declare that (G,k) is a no-instance. Other wise, declare that
-(G,k) is an yes-instance.
+If v is a leaf, then 
 
-Initialize the solution set to empty. Then apply the above mentioned reduction rules to the graph.
-Now graph will have minimum degree 3. Pick a edge uniformly at random from the edges in the reduced
-instance. Now, pick a endpoint from the edge picked previously uniformly at random. Add this
-endpoint to the solution set and delete that from the reduced instance. And continue the process till
-our parameter is positive. Now check if the solution set obtained from the algorithm is a feedback
-vertex set or not. If yes, we return it as solution.
+\hspace*{2cm} $\Gamma(v)$ = 1
 
-Total running time of the algorithm is $O(4^k)$
+\hspace*{2cm} $\Lambda(v)$ = 0
 
-Proof of correctness : \\
-If (G,k) is a no-instance then algorithm always outputs no.
-Suppose (G,k) is an yes-instance and F is a $\leq$ k feedback vertex set.
-Let H=G-F \\
-Pr (an edge in E(F) $\cup$ E(H,F) is chosen) $>$ 1/2 \\
-Pr (a vertex from F is chosen) $>$ 1/2 * 1/2 = 1/4 \\
-Pr(S=F) $>$ (1/4) k \\
-Pr(Algorithm says no) $< (1-(1/4)^k)^{(4)^k} \leq 1/e $ \\
-Pr(Algorithm says yes) $> 1- 1/e \geq 1/2 $
+\hspace*{2cm}$\Delta(v)$ = 1
+
+
+If v has $v_1, v_2, ....., v_q$ as its children, then 
+
+\hspace*{2cm} $\Delta(v)$ = 1 + $\Lambda(v_1)+\Lambda(v_2)+....+\Lambda(v_q)$
+
+$\Delta(v)$ definitely contain v in dominating set, so we need not cover children of v. 
+But we should cover all the grand children of v.
+
+\hspace*{2cm} $\Lambda(v)$ = min\{ $\Gamma(v_1) + \Gamma(v_2) + .... + \Gamma(v_q)$,  
+$1 + \Lambda(v_1)+\Lambda(v_2)+....+\Lambda(v_q)$ \}
+
+$\Lambda(v)$ may or may not contain v in dominating set. If we include v in solution,
+then we need to cover all the grand children of v. If we dont include v in solution, then
+we should cover all the children and grand children of v.
+
+\hspace*{2cm} $\Gamma(v)$ = min\{ $1 + \Lambda(v_1)+\Lambda(v_2)+....+\Lambda(v_q)$,
+min\{$\Delta(v_i) + \Sigma_{i \neq j} \Gamma(v_j) : i \in [q] $ \} \}
+
+Total running time of the algorithm is O(n).
 
 
 

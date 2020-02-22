@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.9.21)  19 FEB 2020 03:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.9.21)  22 FEB 2020 23:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -300,23 +300,23 @@ Package: color 2016/01/03 v1.1b Standard LaTeX Color (DPC)
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 143.
-) (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.aux (/home/sriharsha/Desktop/PA/BTP_report_template/title.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/certificate.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/acknowledgement.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter1.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter2.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter3.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter4.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter5.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/futurework.aux))
+) (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.aux (/home/sriharsha/Desktop/PA/BTP_report_template/title.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/certificate.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/acknowledgement.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter2.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter3.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter4.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/futurework.aux))
 \openout1 = `btp_report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
  (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count128
@@ -342,7 +342,7 @@ Package grfext Info: Graphics extension search list:
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 \AtBeginShipoutBox=\box55
-Package hyperref Info: Link coloring OFF on input line 31.
+Package hyperref Info: Link coloring OFF on input line 33.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -350,16 +350,16 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count134
 )
-LaTeX Info: Redefining \ref on input line 31.
-LaTeX Info: Redefining \pageref on input line 31.
-LaTeX Info: Redefining \nameref on input line 31.
+LaTeX Info: Redefining \ref on input line 33.
+LaTeX Info: Redefining \pageref on input line 33.
+LaTeX Info: Redefining \nameref on input line 33.
  (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.out) (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.out)
 \@outlinefile=\write3
 \openout3 = `btp_report.out'.
 
 \openout2 = `title.aux'.
 
- (/home/sriharsha/Desktop/PA/BTP_report_template/title.tex <IITPkdFullLogoColor.pdf, id=75, 270.00874pt x 264.99pt>
+ (/home/sriharsha/Desktop/PA/BTP_report_template/title.tex <IITPkdFullLogoColor.pdf, id=71, 270.00874pt x 264.99pt>
 File: IITPkdFullLogoColor.pdf Graphic file (type pdf)
  <use IITPkdFullLogoColor.pdf>
 Package pdftex.def Info: IITPkdFullLogoColor.pdf used on input line 19.
@@ -381,18 +381,18 @@ Package pdftex.def Info: IITPkdFullLogoColor.pdf used on input line 19.
 
 
 
-] (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.toc [3
-
-
-])
+] (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.toc)
 \tf@toc=\write4
 \openout4 = `btp_report.toc'.
 
- [4] (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.lof)
+ [3
+
+
+] (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.lof)
 \tf@lof=\write5
 \openout5 = `btp_report.lof'.
 
- [5
+ [4
 
 ] (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.lot)
 \tf@lot=\write6
@@ -403,57 +403,37 @@ Package pdftex.def Info: IITPkdFullLogoColor.pdf used on input line 19.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.52 \include{chapter1}
+l.62 \include{chapter2}
                         [1
 
 ]
-\openout2 = `chapter1.aux'.
-
- (/home/sriharsha/Desktop/PA/BTP_report_template/chapter1.tex)pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.52 \include{chapter1}
-                        [1
-
-] [2
-
-
-]
-
 \openout2 = `chapter2.aux'.
 
-(/home/sriharsha/Desktop/PA/BTP_report_template/chapter2.tex
-Chapter 1.
-[3
-
+ (/home/sriharsha/Desktop/PA/BTP_report_template/chapter2.texpdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.3 \chapter
+            {Vertex Cover} [1
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 49.
+Chapter 1.
+[2
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 89.
  (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 49.
- [4]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 89.
+ [3] [4]
 Missing character: There is no â in font cmr12!
-Missing character: There is no € in font cmr12!
-Missing character: There is no ™ in font cmr12!
-
-Underfull \hbox (badness 10000) in paragraph at lines 66--72
-
- []
+Missing character: There is no ‰ in font cmr12!
+Missing character: There is no ¥ in font cmr12!
+) [5] [6
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--79
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 80--83
-
- []
-
-[5]) [6]
+]
 
 \openout2 = `chapter3.aux'.
 
@@ -462,45 +442,19 @@ Chapter 2.
 [7
 
 
-
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 50--53
-
- []
-
-[8]) [9] [10
-
-
-]
+] [8] [9]
+Missing character: There is no â in font cmr12!
+Missing character: There is no ˆ in font cmr12!
+Missing character: There is no ª in font cmr12!
+ [10] [11]
+Missing character: There is no Â in font cmr12!
+Missing character: There is no · in font cmr12!
+ [12] [13]) [14]
 
 \openout2 = `chapter4.aux'.
 
 (/home/sriharsha/Desktop/PA/BTP_report_template/chapter4.tex
-Missing character: There is no â in font cmr12!
-Missing character: There is no ˆ in font cmr12!
-Missing character: There is no ª in font cmr12!
- [11
-
-]
-Missing character: There is no Â in font cmr12!
-Missing character: There is no · in font cmr12!
- [12]
-Underfull \hbox (badness 10000) in paragraph at lines 109--115
-
- []
-
-[13]) [14]
-
-\openout2 = `chapter5.aux'.
-
-(/home/sriharsha/Desktop/PA/BTP_report_template/chapter5.tex
 Chapter 3.
-
-Underfull \hbox (badness 10000) in paragraph at lines 4--9
-
- []
-
 [15
 
 
@@ -523,31 +477,31 @@ Chapter 4.
 
 
 ]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 87.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 94.
  [21
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 87.
- (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.aux (/home/sriharsha/Desktop/PA/BTP_report_template/title.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/certificate.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/acknowledgement.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter1.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter2.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter3.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter4.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter5.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/futurework.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 87.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 87.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 94.
+ (/home/sriharsha/Desktop/PA/BTP_report_template/btp_report.aux (/home/sriharsha/Desktop/PA/BTP_report_template/title.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/certificate.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/acknowledgement.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter2.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter3.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/chapter4.aux) (/home/sriharsha/Desktop/PA/BTP_report_template/futurework.aux))
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 94.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 94.
 Package rerunfilecheck Info: File `btp_report.out' has not changed.
-(rerunfilecheck)             Checksum: 4788F2F425057983683ED6844687AB42;1176.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 87.
+(rerunfilecheck)             Checksum: 60D32232F5B5F2CBDEB33179223C12C6;1098.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 94.
  ) 
 Here is how much of TeX's memory you used:
- 6303 strings out of 493029
- 94283 string characters out of 6136234
- 185609 words of memory out of 5000000
- 9649 multiletter control sequences out of 15000+600000
- 15080 words of font info for 53 fonts, out of 8000000 for 9000
+ 6295 strings out of 493029
+ 93637 string characters out of 6136234
+ 184769 words of memory out of 5000000
+ 9645 multiletter control sequences out of 15000+600000
+ 14911 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,6n,30p,301b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxsl10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on /home/sriharsha/Desktop/PA/BTP_report_template/btp_report.pdf (28 pages, 239280 bytes).
+ 29i,7n,30p,301b,406s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxsl10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on /home/sriharsha/Desktop/PA/BTP_report_template/btp_report.pdf (27 pages, 248396 bytes).
 PDF statistics:
- 305 PDF objects out of 1000 (max. 8388607)
- 254 compressed objects within 3 object streams
- 51 named destinations out of 1000 (max. 500000)
- 150 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 307 PDF objects out of 1000 (max. 8388607)
+ 258 compressed objects within 3 object streams
+ 62 named destinations out of 1000 (max. 500000)
+ 142 words of extra memory for PDF output out of 10000 (max. 10000000)
 

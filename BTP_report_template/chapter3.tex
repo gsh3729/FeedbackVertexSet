@@ -1,87 +1,349 @@
 \chapter{Feedback Vertex Set}
 
-\section{Branching Feedback Vertex Set}
-Definition : Feedback Vertex Set of a graph is a set of vertices that has at
+\textbf{Definition:} Feedback Vertex Set of a graph is a set of vertices that has at
 least one vertex of every cycle
 
-Instance: An undirected graph G and an integer k \\
-Question: Does there exist a feedback vertex set of G of size at most k?
-Parameter: k
 
+\section{Branching Algorithm}
 
-Reduction Rule 1 : Delete isolated vertex v \\
-Resulting instance : (G-v, k) \\
+\fbox{
+ \parbox{15cm}{Instance : An undirected graph G and an integer k
+
+ Question : Does there exist a feedback vertex set of G of size at most k?
+
+Parameter : k}
+}\vspace{0.6cm}
+
+\textbf{Reduction Rule 1:} Delete isolated vertex v 
+
+Resulting instance : (G-v, k) 
+
+\begin{theorem}    
 (G,k) is an yes-instance iff (G-v,k) is an yes-instance
+\end{theorem}
 
-(G,k) is an yes-instance if (G-v,k) is an yes-instance\\
-Adding a isolated vertex v to graph G-v does not change the size of feedback vertex set as \\
+\textbf{Proof:}
+
+\hfill \vspace{-1.5cm}
+      \begin{center}
+              (G,k) is an yes-instance if (G-v,k) is an yes-instance 
+       \end{center} \vspace{-0.2cm}
+Adding a isolated vertex v to graph G-v does not change the size of feedback vertex set as 
 it does not from any cycle.
 
-(G-v,k) is an yes-instance if (G,k) is an yes-instance\\
+\newpage
+\begin{center}
+    (G-v,k) is an yes-instance if (G,k) is an yes-instance    
+\end{center} \vspace{-0.2cm}
 Removing a isolated vertex v to graph G does not change the size of vertex cover as 
 it won't be in any cycle of graph.
 
-Reduction Rule 2 : Delete degree-1 vertex \\
-Resulting instance : (G-v, k) \\
-(G,k) is an yes-instance iff (G-v,k) is an yes-instance
+\textbf{Reduction Rule 2:} Delete degree-1 vertex 
 
-(G-v,k) is an yes-instance if (G,k) is an yes-instance \\
+Resulting instance : (G-v, k) 
+
+\begin{theorem}
+    (G,k) is an yes-instance iff (G-v,k) is an yes-instance
+\end{theorem}
+
+\textbf{Proof:}
+
+\hfill \vspace{-1.5cm}
+      \begin{center}
+                (G-v,k) is an yes-instance if (G,k) is an yes-instance 
+       \end{center} \vspace{-0.2cm}
 Removing a degree-1 vertex does not change the size of feedback vertex set as it won't be part 
 of any cycle
 
-(G,k) is an yes-instance if (G-v,k) is an yes-instance\\
+\begin{center}
+    (G,k) is an yes-instance if (G-v,k) is an yes-instance    
+\end{center}\vspace{-0.2cm}
 Adding a degree-1 vertex does not change the size of feedback vertex set as it won't be part 
 of any cycle
 
-Reduction Rule 3: If there is a loop at a vertex v, delete v from the graph
+\textbf{Reduction Rule 3:} If there is a loop at a vertex v, delete v from the graph
 and reduce the parameter by 1 
 
-Reduction Rule 4: If there is an edge with multiplicity > 2, reduce it to 2
+\textbf{Reduction Rule 4:} If there is an edge with multiplicity $>$ 2, reduce it to 2
 
-Reduction Rule 5: Short circuit degree-2 vertices \\
-Reduction instance : (G',k) \\
-(G,k) is an yes-instance iff (G',k) is an yes-instance
+\textbf{Reduction Rule 5:} Short circuit degree-2 vertices 
 
-Let v be the degree-2 vertex and x,y be its neighbours. \\
-(G,k) is an yes-instance iff (G',k) is an yes-instance \\
+Reduction instance : (G',k) 
+
+\begin{theorem}
+(G,k) is an yes-instance iff (G',k) is an yes-instance    
+\end{theorem}
+
+\textbf{Proof:}
+
+\hfill \vspace{-1.5cm}
+      \begin{center}
+(G,k) is an yes-instance iff (G',k) is an yes-instance 
+       \end{center} \vspace{-0.2cm}
+
+Let v be the degree-2 vertex and x,y be its neighbours.
+
 Introducing an vertex v between x and y (v-x edge and v-y edge), does not change the size
 of the feedback vertex set.
 
-(G',k) is an yes-instance iff (G,k) is an yes-instance \\
-Any cycle through v also goes through x and y. \\
-So removing vertex v does not change the size of the feedback vertex set. \\
+\begin{center}
+    (G',k) is an yes-instance iff (G,k) is an yes-instance     
+\end{center}\vspace{-0.2cm}
 
-Now after applying these reduction rules, graph contains minimum degree 3. 
+Any cycle through v also goes through x and y. 
+So removing vertex v does not change the size of the feedback vertex set. 
 
+
+Now after applying these reduction rules, graph contains minimum degree-3. 
+
+\begin{theorem}
 Every FVS of size $\leq$ k contains at least one vertex from the top 3k vertices after sorting
 the vertices according to their degree. 
+\end{theorem}
 
-Let $v_1, v_2, ......, v_n$ be the descending order of vertices according to their degree. \\
-$v_h$ = \{$v_1,v_2,....,v_{3k}$ \} 
+\textbf{Proof}:
 
-Let us assume that there is a feedback vertex set X of size at most k such that $X \cap v_{h} = \emptyset$.
+Let $v_1, v_2, ......, v_n$ be the descending order of vertices according to their degree. 
 
-Graph F = G-X is a forest  \\
-Number of edges in F is atmost $|V(G)|-|X|-1$. \\
-Every edge of E(G)-E(F) is incident to a vertex of X. \\
-$\Sigma_{v \in X} d(v) + |V(G)|-|X|-1 \geq |E(G)|$ \\
-$\Sigma_{v \in X} (d(v)-1) \geq |E(G)|-|V(G)|+1$ 
+\hspace*{2cm} $v_h$ = \{$v_1,v_2,....,v_{3k}$ \} 
 
-For every v $\in$ X, d(v) is at most the minimum of vertex degrees from $v_h$ \\
-$\Sigma_{i=1}^{3k}(d(v_i)-1) \geq 3*(\Sigma_{v \in X}(d(v_)-1) \geq 3*(|E(G)|-|V(G)|+1)$ \\
-$\Sigma_{i>3k}(d(v_i)-1) \geq \Sigma_{v \in x}$     \\
-$\Sigma_{i=1}^{n}(d(v_i)-1) \geq 4*(|E(G)|-|V(G)|+1)$ \\
-$\Sigma_{i=1}^{n}(d(v_i)) = 2|E(G)|$ \\
-$2|E(G)| - |V(G)| \geq 4*(|E(G)|-|V(G)|+1)$ \\
-$2|E(G)| < 3|V(G)|$ \\
+Let us assume that there is a feedback vertex set X of size at most k 
+such that $X \cap v_{h} = \emptyset$.
+
+Graph F = G-X is a forest  
+
+Number of edges in F is atmost $|V(G)|-|X|-1$. 
+
+Every edge of E(G)-E(F) is incident to a vertex of X. 
+
+\hspace*{2cm} $\Sigma_{v \in X} d(v) + |V(G)|-|X|-1 \geq |E(G)|$ 
+
+\hspace*{2cm} $\Sigma_{v \in X} (d(v)-1) \geq |E(G)|-|V(G)|+1$ 
+
+For every v $\in$ X, d(v) is at most the minimum of vertex degrees from $v_h$ 
+
+\hspace*{2cm} $\Sigma_{i=1}^{3k}(d(v_i)-1) \geq 3*(\Sigma_{v \in X}(d(v_)-1) \geq 3*(|E(G)|-|V(G)|+1)$ 
+
+\hspace*{2cm} $\Sigma_{i>3k}(d(v_i)-1) \geq \Sigma_{v \in x}$     
+
+\hspace*{2cm} $\Sigma_{i=1}^{n}(d(v_i)-1) \geq 4*(|E(G)|-|V(G)|+1)$ 
+
+\hspace*{2cm} $\Sigma_{i=1}^{n}(d(v_i)) = 2|E(G)|$ 
+
+\hspace*{2cm} $2|E(G)| - |V(G)| \geq 4*(|E(G)|-|V(G)|+1)$ 
+
+\hspace*{2cm} $2|E(G)| < 3|V(G)|$ 
+
 This contradicts the fact that every vertex of G is of minimum degree 3.
 
 From these 3k vertices, at least one will be in solution. So we have 3k branches each branch
-choosing one vertex from the $v_h$. \\
-Reduced instance : (G-v, k-1)
+choosing one vertex from the $v_h$. 
+
+Reduced instance: (G-v, k-1)
 
 If the reduced instance graph is empty and still k$\geq$0, then we return as yes-instance.
 If the k$<$0, then we return as no-instance.
 
-Total running time of the algorithm is $O((3k)^k)$
+Total running time of the algorithm is $O^*((3k)^k)$
+
+
+
+
+\section{Iterative Compression Algorithm}
+
+\hspace*{1.5cm} Iterative compression is an algorithmic technique for the design of
+ fixed-parameter tractable algorithms,
+in which one element (such as a vertex of a graph) is added to the problem in each step, 
+and a small solution for the problem prior to the addition is used to help find a small 
+solution to the problem after the step.
+
+\begin{enumerate}
+        \item Start with a subgraph induced by a vertex set S of size k, and a solution X 
+        that equals S itself.
+        \item While S $\neq$ V, perform the following steps:
+        \begin{itemize}
+                \item Let v be any vertex of V \ S, and add v to S \vspace{-0.4cm}
+                \item Test whether the (k + 1)-vertex solution Y = X ∪ {x} to S can
+                 be compressed to a k-vertex solution. \vspace{-0.4cm}
+                \item If it cannot be compressed, abort the algorithm: the input graph has no 
+                k-vertex solution. \vspace{-0.4cm}
+                \item Otherwise, set X to the new compressed solution and continue
+                 the loop.
+        \end{itemize}
+\end{enumerate}
+
+
+\fbox{
+ \parbox{15cm}{Instance: Given a graph G and K+1 size solution S
+
+ Question: Does there exist a feedback vertex set of G of size at most k?
+
+Parameter : k}
+}\vspace{0.6cm}
+
+Let the solution set of size atmost k be R.
+
+Divide the set s into 2 parts. One part which contains the vertices from R and other part X which does 
+contain vertices from R.
+
+Total there are $2^{k+1}$ choices of S $\cap$ R
+
+Let r number of vertices be in X.
+
+As k+1-r are already in solution, now our aim is to find a set of at most r-1 vertices 
+from Y (i.e. G-S).
+
+ \textbf{Reduction rule 1:}
+Delete all the vertices of degree at most 1 in G
+
+ \textbf{Reduction rule 2:}
+If there exists any vertex v in Y such that G(X $\cup$ v) contains a cycle,
+then include this vertex in the solution, remove this vertex and decrease the parameter by 1.
+
+ \textbf{Reduction rule 3:}
+If there is a vertex v in Y of degree 2 in G such
+that at least one neighbor of v in G is from Y, then delete this vertex
+and make its neighbors adjacent.
+
+\vspace{0.3cm}
+Since Y is a forest, Y has a vertex v of degree at most 1. 
+
+\vspace{0.3cm}
+v has $\geq2$ neighbours in Y, otherwise above reduction rules would have been applied.
+And also those two neighbours will be in different components of Y, otherwise above reduction
+rule would have been applied. 
+
+\vspace{0.3cm}
+Here we have two possibilities. Either v is in solution or v is not in solution.
+Branch into these possibilities. 
+
+If v is in solution, then the reduced instance is (X,Y-$\{v\}$,r-2) 
+
+If v is not in solution, then the reduced instance is (X $ \cup \{v\}$ ,Y-$\{v\}$,r-1)
+
+\vspace{0.3cm}
+In one branch, r decreases by 1 and in another branch connected components of x decrease by 1.
+
+\vspace{0.3cm}
+Let I = r + \#C(X), where \#C(X) is the number of connected components of X. 
+
+\hspace*{2cm}I $\leq$ k+1+k $\leq$ 2k+1
+
+Let T(I) denote the number of leaves in the tree rooted at instance with measure I.
+
+\[
+    T(I)=
+    \left\{
+    \begin{array}{lr}
+       2T(I-1) & if I \geq 1 \\
+      1& otherwise 
+    \end{array}
+    \right\} 
+\]
+
+Total running time for disjoint compression algorithm is $O^*(2^{2k})$
+
+If there exists an algorithm solving Disjoint Feedback Vertex Set in
+ Tournaments in time g(k)·n , then there exists an algorithm
+solving Feedback Vertex Set in Tournaments Compression in time
+$\Sigma_{i=0}^{k}   \binom{k+1}{i} g(k-i) n^{O(1)}$
+
+If g(k) = $4^k$, then the running time of the algorithm is $O^*(5^k)$  
+
+
+\section{Randomized Algorithm}
+\fbox{
+ \parbox{15cm}{Instance: Given a graph G and a integer k 
+
+ Question: Does there exist a feedback vertex set of G of size at most k?
+
+Parameter : k}
+}\vspace{0.6cm}
+
+
+\textbf{Reduction Rule 1:} Delete isolated vertices 
+
+\textbf{Reduction Rule 2:} Delete degree-1 vertices 
+
+\textbf{Reduction Rule 3:} If there is a loop at a vertex v, delete v from the graph
+and reduce the parameter by 1 
+
+\textbf{Reduction Rule 4:} If there is an edge with multiplicity $>$ 2, reduce it to 2 
+
+\textbf{Reduction Rule 5:} Short circuit degree-2 vertices 
+
+After applying the reduction rules, graph contains minimum degree 3.
+
+\begin{theorem}
+        If G is graph with minimum degree $\geq$ 3, then number of edges
+        incident to any feedback vertex set S is $> |E(G)|/2$        
+\end{theorem}
+
+\textbf{Proof:}
+
+Let feedback vertex set of G be S and H = G-S 
+
+Let E(X) be edges incident to S, E(G) be edges in graph G, E(H) be edges in subgraph H, 
+E(H,S) be edges between H and S.
+
+\hspace*{2cm} We need to prove that $|$E(X)$| > |$E(G $|/2$
+
+\hspace*{1.6cm} $|E(X)| >  |E(G)|/2$ is equivalent to $|E(X)| > |V(H)|$ 
+
+\hspace*{2.6cm} $2|E(X)| > |E(G)| $ 
+
+\hspace*{2.6cm} $2|E(X)| > |E(X)|+|E(H)| $ 
+
+\hspace*{2.6cm} $|E(X)| > |E(H)| $ 
+
+\hspace*{2.6cm} $|E(X)| > |V(H)|$ 
+
+Let $V_{\leq 1}$, $V_2$ and $V_{\geq 3}$ denote the set of vertices in V(H) such that they
+have degree at most 1, exactly 2, and at least 3 in H respectively. 
+
+\hspace*{2cm} $|E(X)| \geq |E(H,S)|$ 
+
+\hspace*{2cm} $|E(X)| \geq 2|V_{\leq 1}| + |V_2|$ 
+
+\hspace*{2cm} $|E(X)| > |V_{\leq 1}| + |V_2| + |V_{\geq 3}|$ 
+
+\hspace*{2cm} $|E(X)| > |V(H)|$ 
+
+Feedback Vertex Set can be solved in randomized polynomial
+time, with success probability at least $4^{-k}$
+
+\vspace{0.3cm}
+Run the following algorithm $4^k$ times. If none of the
+executions return yes, then declare that (G,k) is a no-instance. Other wise, declare that
+(G,k) is an yes-instance.
+
+\hspace*{1.5cm} Initialize the solution set to empty. Then apply the above mentioned reduction rules to the graph.
+Now graph will have minimum degree 3. Pick a edge uniformly at random from the edges in the reduced
+instance. Now, pick a endpoint from the edge picked previously uniformly at random. Add this
+endpoint to the solution set and delete that from the reduced instance. And continue the process till
+our parameter is positive. Now check if the solution set obtained from the algorithm is a feedback
+vertex set or not. If yes, we return it as solution.
+
+\vspace{0.3cm}
+Total running time of the algorithm is $O^*(4^{k})$
+
+\newpage
+\textbf{Proof:}
+
+If (G,k) is a no-instance then algorithm always outputs no.
+
+Suppose (G,k) is an yes-instance and F is a $\leq$ k feedback vertex set.
+
+Let H=G-F 
+
+\hspace*{1.5cm} Pr (an edge in E(F) $\cup$ E(H,F) is chosen) $>$ 1/2 
+
+\hspace*{1.5cm} Pr (a vertex from F is chosen) $>$ 1/2 * 1/2 = 1/4 
+
+\hspace*{1.5cm} Pr(S=F) $>$ (1/4)k 
+
+\hspace*{1.5cm} Pr(Algorithm says no) $< (1-(1/4)^k)^{(4)^k} \leq 1/e $ 
+
+\hspace*{1.5cm} Pr(Algorithm says yes) $> 1- 1/e \geq 1/2 $
+
 
