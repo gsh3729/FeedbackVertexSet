@@ -1,0 +1,7 @@
+c This file describes the graph 
+p 5 5
+0 2
+1 4
+1 3
+2 3
+2 4
