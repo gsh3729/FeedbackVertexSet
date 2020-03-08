@@ -57,6 +57,47 @@ void graph :: shift_matrix(int x)
     v--;
 }
 
+int get_degree(int x)
+{
+	int degree = 0;
+	for (int i = 0; i < v; ++i)
+	{
+		if (matrix[x][i] >= 1)
+		{
+			degree = degree + matrix[x][i];
+		}
+		
+	}
+	return degree;
+}
+
+int double_edges(int x)
+{
+	int num=0;
+	for (int i = 0; i < v; ++i)
+	{
+		if (matrix[x][i] == 2)
+		{
+			num++;
+		}
+		
+	}
+	return num;
+}
+
+vector<int> neighbours(int x)
+{
+	vector<int> ngbrs;
+	for (int i = 0; i < v; ++i)
+	{
+		if (matrix[x][i] >= 1)
+		{
+			ngbrs.push_back(i);
+		}
+	}
+	return ngbrs;
+}
+
 bool graph :: is_empty()
 {
 	if (v <= 0)
