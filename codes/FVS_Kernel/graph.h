@@ -14,10 +14,19 @@ class graph 													// shift matrix t.v is there check once
 	int matrix[100][100];
 	void add_edge(int a, int b);
 	void print_matrix();
-	void delete_vertices(vector<int> x);
 	void shift_matrix(int x);
+	int get_degree(int x);
+	int double_edges(int x);
+	void delete_vertices(vector<int> x);
 	bool is_empty();
 };
+
+class node
+{
+  public:
+  	int data;
+  	vector<int> child;
+}
 
 
 #endif

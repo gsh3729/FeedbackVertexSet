@@ -117,74 +117,85 @@ void preprocessing_rules(graph& g, int& k)
 	g.print_matrix();    
 }
 
-connected_components()
-{
 
-}
-
-connectedComponents() 
+vector<node*> connectedComponents(graph g) 
 { 
-    // Mark all the vertices as not visited 
     bool *visited = new bool[g.v]; 
     for(int i = 0; i < g.v; i++)
     {
         visited[i] = false; 
     }
   
+  	vector<node*> components;
     for (int i=0; i<g.v; i++) 
     { 
         if (visited[i] == false) 
         { 
-            // print all reachable vertices 
-            // from v 
-            DFSUtil(g, root, i, visited); 
-  
-            cout << "\n"; 
+            node* root = new node();
+            root->data = i;
+            DFSUtil(g, root, i, visited);  // root is already pointer is it req to send &root?? 
+  			components.push(root);
         } 
-    } 
+    }
+
+    return components; 
 } 
   
-DFSUtil(graph g, node root, int v, bool visited[]) 
+void DFSUtil(graph g, node root, int v, bool visited[]) 
 { 
     // Mark the current node as visited and print it 
     visited[v] = true; 
-    cout << v << " "; 
-  
-    // Recur for all the vertices 
-    // adjacent to this vertex 
+
     for (int i = 0; i < g.v; ++i)
     {
     	if (g.matrix[v][i]>=1)
     	{
     		if(!visited[*i]) 
 	        {
-	            DFSUtil(*i, visited); 
+	        	node* child = new node();
+	        	child->data = i;
+	        	root->child.push_back(child);
+	            DFSUtil(g, child, *i, visited); 
 	        }
     	}
     }
+    return;
 }
 
-vector<int> flower_lemma_return_fvs3k(graph g, int v)
+vector<int> two_approximation_fvs(graph g, int k)
+{
+	return vector<int> ();
+}
+
+int lca(node* root, int i, int j)
+{
+
+
+	return 0;
+}
+
+
+tuple<vector<int>, vector<node>> flower_lemma_return_fvs3k(graph g, int v, int k)
 {
 	vector<int> solution_2k;
-	solution_2k = two_approximation_fvs(g);
+	solution_2k = two_approximation_fvs(g,k);
 	graph g1 = g;
 	forest = g1.delete_vertices(solution_2k);
 
 	if (solution_2k.size()> 2*k)
 	{
-		return ;
+		return make_tuple(vector<int>(), vector<node>());
 	}
-	else if(!solution_2k.find(v))
+	else if (find(solution_2k.begin(), solution_2k.end(), v) == solution_2k.end())
 	{
 		return solution_2k;
 	}
 	else
 	{
-		trees = connected_components(g1);
+		vector<node*> trees = connected_components(g1);
 		for(auto tree : trees)
 		{
-			tuple<int, int> ancestor_pairs;
+			tuple<int, int, pair<int,int>> ancestor_pairs;
 			vector<int> ngbrs_v = g1.neighbours(v);
 			for (int i = 0; i < ngbrs_v.size(); ++i)
 			{
@@ -193,29 +204,113 @@ vector<int> flower_lemma_return_fvs3k(graph g, int v)
 					if (i!=j)
 					{
 						int ancestor = lca(tree, i, j);
-						ancestor_pairs.insert(ancestor, depth);
+						ancestor_pairs.insert(ancestor, depth, make_pair(i,j));
 					}
 				}
 			}
 
-			for (auto  : ancestor_pairs)
+			for (auto temp : ancestor_pairs)
 			{
-				if (search(i) && search(j))
+				tie(ancestor,depth,pair) = temp;
+				if (search_node(tree, pair.first) && search_node(tree, pair.second))
 				{
-					parent_ancestor = find(tree, ancestor);
-					parent_ancestor.remove(ancestor);
+					parent_ancestor = find_parent_node(tree, ancestor);
+					ancestor_node = find_node(tree, ancestor);
+					parent_ancestor.child.erase(remove(parent_ancestor.child.begin(), parent_ancestor.child.end(), ancestor_node), parent_ancestor.child.end());
 					final_ancestors.append(ancestor);
 				}
 			}
 
-			solution_2k.remove(v);
-			solution_2k.append(final_ancestors);
-			return solution_2k;
+			solution_2k.erase(remove(solution_2k.begin(), solution_2k.end(), v), solution_2k.end());
+			solution_2k.insert(solution_2k.end(), final_ancestors.begin(), final_ancestors.end());
+			return make_tuple(solution_2k,trees); // returning here is not crct check once with loop
 		}
 	}
 }
 
-void further_reduction()
+tuple<vector<int>, vector<int>> expansion_lemma(graph g, vector<int> solution_3k)
+{
+	bool flag = true;
+	for (auto i : solution_3k)
+	{
+		if (g.degree(i)<2)
+		{
+			flag = false;
+		}
+	}
+
+
+	if (flag)
+	{
+		vector<int> ngbrs;
+		for (auto i : solution_3k)
+		{
+			ngbrs.push_back(g.ngbrs(i));
+		}
+		return make_tuple(solution_3k,ngbrs) ;
+	}
+	else
+	{
+		int pow_set_size = pow(2, solution_3k.size());
+
+		vector<vector <int>> power_set;
+		for(int counter = 1; counter < pow_set_size; counter++) 
+	    { 
+	    	vector<int> v;
+		    for(int j = 0; j < solution_3k.size(); j++) 
+		    { 
+		        if(counter & (1 << j)) 
+		        {
+		        	v.push_back(solution_3k[j]);
+		        }
+		    }
+		    power_set.push_back(v); 
+	    }
+
+	    for (auto i: power_set)
+	    {
+	    	vector<int> ngbrs;
+	    	for (auto j : i)
+	    	{
+	    		ngbrs.push_back(g.ngbrs(j));
+	    	}
+	    	if (ngbrs.size()<2*i.size())
+	    	{
+	    		graph g1 = g;
+	    		g.delete_vertices(i); // i may have neibhbours in i 
+	    		g.delete_vertices(ngbrs);
+	    		solution_3k.delete(i);
+	    		return expansion_lemma(g, solution_3k);
+	    	}
+	    }
+
+	}
+}
+
+bool check_for_flower(graph g, int v)
+{
+	int petals = 0;
+	vector<vector<int>> cycles = find_cycles(g);
+	for(auto cycle : cycles)
+	{
+		if (find(cycle.begin(), cycle.end(), v) != cycle.end())
+		{
+			petals++;
+		}
+	}
+	if (petals >= k+1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+	return true;
+}
+
+
+void further_reduction(graph g, int k)
 {
 	bool flag;
 	do
@@ -225,7 +320,7 @@ void further_reduction()
 		{
 			if (g.get_degree(i)>10*k)
 			{
-				if(check_for_flower())
+				if(check_for_flower(g,i))
 				{
 					flag=true;
 					k--;
@@ -243,11 +338,11 @@ void further_reduction()
 		{
 			if (g.get_degree(i)>10*k)
 			{
-				if(g.double_edges(v)>2*k)
+				if(g.double_edges(i)>2*k)
 				{
 					flag=true;
 					k--;
-					graph.shift_matrix(i); //restart loop
+					g.shift_matrix(i); //restart loop
 				}
 			}
 		}
@@ -260,8 +355,25 @@ void further_reduction()
 		{
 			if (g.get_degree(i)>10*k)
 			{
-				solution_3k = flower_lemma(g, v);
+				solution_3k = flower_lemma_return_fvs3k(g, v);
+				tie(solution_3k_expansion, ngbrs_3k_expansion) = expansion_lemma(g, solution_3k);
 
+				for (auto j : solution_3k_expansion)
+				{
+					g.matrix[j][v] = 2;
+					g.matrix[v][j] = 2;					
+				}
+
+				for (int j = 0; j < g.v; ++j)
+				{
+					if (g.matrix[j][v] >= 1)
+					{
+						for (auto : )
+						{
+
+						}
+					}
+				}
 			}
 		}
 	}while(flag);
@@ -271,52 +383,10 @@ void further_reduction()
 }
 
 
-void get_subgraph(graph& g, vector<int> subgraph_vertices)
-{
-	vector<int> vertex_to_delete;
-	for (int i = 0; i < g.v; ++i)
-	{
-		if (find(subgraph_vertices.begin(), subgraph_vertices.end(), i) == subgraph_vertices.end())
-		{
-			vertex_to_delete.push_back(i);
-		}
-	}
-
-	g.delete_vertices(vertex_to_delete);
-}
 
 
-int find_leaf(graph g, vector<int> x_forest, vector<int> y_forest)
-{
-	graph g1 = g;
-	g1.delete_vertices(x_forest);
 
-	for (int i = 0; i < g1.v; ++i)
-	{
-		int y_degree = 0;
-		for (int j = 0; j < g1.v; ++j)
-		{
-			if (g1.matrix[i][j] == 1)
-			{
-				y_degree++;
-			}
-		}
 
-		int x_degree=0;
-		for (auto j : x_forest)
-		{
-			if (g.matrix[i][j]==1)
-			{
-				x_degree++;
-			}
-		}
-
-		if (y_degree <= 1 && x_degree >= 2)
-		{
-			return i;
-		}
-	}
-}
 
 int main(int argc, char const *argv[])
 {
@@ -335,6 +405,23 @@ int main(int argc, char const *argv[])
 
 	return 0;
 }
+
+
+void get_subgraph(graph& g, vector<int> subgraph_vertices)
+{
+	vector<int> vertex_to_delete;
+	for (int i = 0; i < g.v; ++i)
+	{
+		if (find(subgraph_vertices.begin(), subgraph_vertices.end(), i) == subgraph_vertices.end())
+		{
+			vertex_to_delete.push_back(i);
+		}
+	}
+
+	g.delete_vertices(vertex_to_delete);
+}
+
+
 
 vector<vector<int>> find_cycles(graph g)
 {
